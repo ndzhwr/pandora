@@ -2,10 +2,8 @@ import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { Logger } from '@nestjs/common';
 import { config } from 'dotenv';
-// import * as cors from 'cors';
 import * as morgan from 'morgan';
 import { env } from 'process';
-import { LoggerMiddleware } from './middlewares';
 declare const module: any;
 config();
 async function bootstrap() {
@@ -14,8 +12,8 @@ async function bootstrap() {
     origin: ['http://localhost:3000', 'http://pandora-monorepo-web.vercel.app'],
   });
 
-
   app.use(morgan("combined"))
+
   await app.listen(env.PORT);
   app.useLogger(new Logger());
   if (module.hot) {

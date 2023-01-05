@@ -33,6 +33,7 @@ export class PostsController {
     @UploadedFile() file: Express.Multer.File,
   ) {
     const user = req?.user;
+    console.log(file)
     return this.postsService.createPost(user, createPostDto, file);
   }
 

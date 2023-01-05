@@ -42,6 +42,7 @@ export class AuthController {
 
   @Put('refreshToken')
   refreshToken(@Body() body : { refreshToken : string}){
+    console.log(body)
     return this.authService.refreshToken(body.refreshToken)
   }
 }

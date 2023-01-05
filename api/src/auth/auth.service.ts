@@ -193,7 +193,6 @@ export class AuthService {
         tokens
       }
     } catch (err: any) {
-      console.log(err);
       throw new NotAcceptableException("Internal server error")
     }
   }

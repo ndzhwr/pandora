@@ -1,0 +1,23 @@
+{
+  "name": "pandora-monorepo",
+  "workspaces": [
+    "api",
+    "web"
+  ],
+  "version": "0.0.0",
+  "description": "Pandora monorepo",
+  "main": "index.js",
+  "repository": "https://github.com/ndzhwr/pandora-monorepo.git",
+  "author": "Regis NDIZIHIWE",
+  "license": "MIT",
+  "private": true,
+  "scripts": {
+    "dev:api": "cd api && yarn start:dev",
+    "dev:web": "cd web && yarn dev",
+    "dev": "yarn dev:api & yarn dev:web",
+    "prepare": "husky install"
+  },
+  "devDependencies": {
+    "husky": "^8.0.0"
+  }
+}

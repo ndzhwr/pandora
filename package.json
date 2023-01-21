@@ -15,7 +15,8 @@
     "dev:api": "cd api && yarn start:dev",
     "dev:web": "cd web && yarn dev",
     "dev": "yarn dev:api & yarn dev:web",
-    "prepare": "husky install"
+    "prepare": "husky install",
+    "lint": ""
   },
   "devDependencies": {
     "husky": "^8.0.0"

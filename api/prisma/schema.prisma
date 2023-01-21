@@ -18,7 +18,7 @@ model User {
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   password         String
-  refreshToken     String
+  refreshToken     String  @default("")
   following        String[]
   followers        String[]
   profile          Profile?

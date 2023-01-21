@@ -1,6 +1,6 @@
 import { Injectable, NotAcceptableException } from '@nestjs/common';
-import { AuthTokens, SignupDto } from '../types';
-import { hash } from 'bcrypt';
+import { AuthTokens, LoginDto, SignupDto } from '../types';
+import { hash, compare } from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UtilsService } from 'src/utils/utils.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
@@ -68,6 +68,28 @@ export class AuthService {
       console.log(process.env.JWT_SECRET);
       throw new NotAcceptableException(err.message);
     }
+  }
+
+  async login(loginDto: LoginDto): Promise<AuthTokens> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        email: loginDto.email,
+      },
+    });
+    if (!user) throw new NotAcceptableException('Invalid credentials');
+
+    if (!(await compare(loginDto.password, user.password)))
+      throw new NotAcceptableException('Invalid credentials');
+
+    const tokens = this.utils.generateTokens({
+      id: user.id,
+      username: user.username,
+    });
+    await this.prisma.user.update({
+      where: { id: user.id },
+      data: { refreshToken: tokens.refreshToken },
+    });
+    return tokens;
   }
 
   private async hash(password: string): Promise<string> {

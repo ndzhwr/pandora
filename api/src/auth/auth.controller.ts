@@ -1,6 +1,6 @@
 import { Body, Controller, Post } from '@nestjs/common';
 import { NotAcceptableException } from '@nestjs/common/exceptions';
-import { SignupDto } from '../types';
+import { SignupDto, LoginDto } from '../types';
 import { AuthService } from './auth.service';
 
 @Controller('auth')
@@ -15,5 +15,10 @@ export class AuthController {
     if (password !== confirmPassword)
       throw new NotAcceptableException('Passwords do not match');
     return this.authService.signup(signupDto);
+  }
+
+  @Post('login.json')
+  login(@Body() loginDto: LoginDto) {
+    return this.authService.login(loginDto);
   }
 }

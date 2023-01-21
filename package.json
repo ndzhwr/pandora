@@ -14,11 +14,15 @@
   "scripts": {
     "dev:api": "cd api && yarn start:dev",
     "dev:web": "cd web && yarn dev",
-    "dev": "yarn dev:api & yarn dev:web",
+    "dev": "concurrently \"cd api && yarn start:dev\"  \"cd web && yarn dev \"",
+    "build": "concurrently \"cd api && yarn build\"  \"cd web && yarn build \"",
     "prepare": "husky install",
-    "lint": ""
+    "lint": "concurrently \"cd api && yarn lint\"  \"cd web && yarn lint \""
   },
   "devDependencies": {
     "husky": "^8.0.0"
+  },
+  "dependencies": {
+    "concurrently": "^7.6.0"
   }
 }

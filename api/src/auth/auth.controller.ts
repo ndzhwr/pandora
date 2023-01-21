@@ -1,4 +1,4 @@
-import { Body, Controller, Post } from '@nestjs/common';
+import { Body, Controller, Param, Post, Put } from '@nestjs/common';
 import { NotAcceptableException } from '@nestjs/common/exceptions';
 import { SignupDto, LoginDto } from '../types';
 import { AuthService } from './auth.service';
@@ -20,5 +20,13 @@ export class AuthController {
   @Post('login.json')
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
+  }
+
+  @Put('deleteaccount.json')
+  deleteAccount(@Param() userId: string): Promise<{
+    success: boolean;
+    message: string;
+  }> {
+    return this.authService.deleleAccount(userId);
   }
 }

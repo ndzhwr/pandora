@@ -92,6 +92,21 @@ export class AuthService {
     return tokens;
   }
 
+  async deleleAccount(
+    id: string,
+  ): Promise<{ success: boolean; message: string }> {
+    const user = await this.prisma.user.findFirst({
+      where: {
+        id: id,
+      },
+    });
+    if (!user) throw new NotAcceptableException('Invalid credentials');
+    await this.prisma.user.delete({
+      where: { id: id },
+    });
+    return { success: true, message: 'Account deleted' };
+  }
+
   private async hash(password: string): Promise<string> {
     const hashed = await hash(password, 10);
     return hashed;

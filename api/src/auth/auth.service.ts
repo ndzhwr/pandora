@@ -71,6 +71,9 @@ export class AuthService {
   }
 
   async login(loginDto: LoginDto): Promise<AuthTokens> {
+    const { email, password } = loginDto;
+    if (!email || !password)
+      throw new NotAcceptableException('No required credentials');
     const user = await this.prisma.user.findFirst({
       where: {
         email: loginDto.email,

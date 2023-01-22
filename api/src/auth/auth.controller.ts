@@ -2,7 +2,6 @@ import { Body, Controller, Param, Post, Put } from '@nestjs/common';
 import { NotAcceptableException } from '@nestjs/common/exceptions';
 import { SignupDto, LoginDto } from '../types';
 import { AuthService } from './auth.service';
-
 @Controller('auth')
 export class AuthController {
   private authService: AuthService;
@@ -23,7 +22,7 @@ export class AuthController {
   }
 
   @Put('deleteaccount.json')
-  deleteAccount(@Param() userId: string): Promise<{
+  deleteAccount(@Param('userId') userId: string): Promise<{
     success: boolean;
     message: string;
   }> {

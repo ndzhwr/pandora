@@ -1,4 +1,4 @@
-import { Body, Controller, Post, Req, UploadedFile } from '@nestjs/common';
+import { Body, Controller, Post, Put, Req, UploadedFile } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -20,5 +20,15 @@ export class ProfileController {
   ) {
     const user = req?.user;
     return this.profileService.createProfile(user, userProfileDto, file);
+  }
+
+  @Put('updateProfilePicture')
+  @UseInterceptors(FileInterceptor('profilePicture'))
+  updateProfilePicture(
+    @Req() req: Request,
+    @UploadedFile() file: Express.Multer.File,
+  ) {
+    const user = req?.user;
+    return this.profileService.updateProfilePicture(user, file);
   }
 }

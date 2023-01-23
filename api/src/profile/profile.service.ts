@@ -29,9 +29,7 @@ export class ProfileService {
       else {
         await this.prisma.profile.create({
           data: {
-            user: {
-              connect: { id: theuser.id },
-            },
+            userId: theuser.id,
             bio: userProfileDto.bio,
             status: userProfileDto.bio,
             gender: GENDER.FEMALE,

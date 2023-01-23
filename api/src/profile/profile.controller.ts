@@ -6,12 +6,14 @@ import {
   Put,
   Req,
   UploadedFile,
+  UsePipes,
 } from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
 import { UserProfileDto } from 'src/types';
 import { UseInterceptors } from '@nestjs/common';
+import { ParseGenderPipe } from 'src/pipes';
 @Controller('profile')
 export class ProfileController {
   private profileService: ProfileService;
@@ -20,6 +22,7 @@ export class ProfileController {
   }
 
   @Post('create')
+  @UsePipes(ParseGenderPipe)
   @UseInterceptors(FileInterceptor('profilePicture'))
   createProfile(
     @Req() req: Request,
@@ -44,5 +47,20 @@ export class ProfileController {
   deleteProfile(@Req() req: Request) {
     const user = req?.user;
     return this.profileService.deleteProfile(user);
+  }
+
+  @UsePipes(ParseGenderPipe)
+  @Put('updateProfileFields')
+  updateProfileFields(
+    @Req() req: Request,
+    @Body()
+    data: {
+      bio?: string;
+      status?: string;
+      gender?: 'MALE' | 'FEMALE' | 'PREFER_NOT_TO_SAY';
+    },
+  ) {
+    const user = req?.user;
+    return this.profileService.updateProfileFields(user, data);
   }
 }

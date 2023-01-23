@@ -1,6 +1,7 @@
 import {
   Injectable,
   InternalServerErrorException,
+  NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
 import { User } from '@prisma/client';
@@ -26,16 +27,28 @@ export class ProfileService {
       const theuser: User = await this.prisma.user.findUnique({
         where: { id: user['id'] },
       });
+      if (
+        await this.prisma.profile.findUnique({
+          where: {
+            userId: theuser.id,
+          },
+        })
+      ) {
+        throw new NotAcceptableException('User already has a profile');
+      }
       const image = await this.utils.uploadFile(file);
-      console.log(image);
       if (!theuser) throw new NotFoundException('User not found');
       else {
         const profile = await this.prisma.profile.create({
           data: {
-            userId: theuser.id,
+            user: {
+              connect: {
+                id: theuser.id,
+              },
+            },
             bio: userProfileDto.bio,
             status: userProfileDto.bio,
-            gender: GENDER.FEMALE,
+            gender: GENDER.MALE,
             profilePicture: image,
           },
           include: {
@@ -45,7 +58,7 @@ export class ProfileService {
         return profile;
       }
     } catch (err) {
-      console.log(err);
+      throw new InternalServerErrorException(err.message);
     }
   }
 
@@ -104,6 +117,39 @@ export class ProfileService {
           },
         });
         return { success: true, profle: deletedProfile };
+      }
+    } catch (error) {
+      throw new InternalServerErrorException(error.message);
+    }
+  }
+
+  async updateProfileFields(
+    user: Express.User,
+    data: {
+      bio?: string;
+      status?: string;
+      gender?: GENDER;
+    },
+  ) {
+    try {
+      const theuser = await this.prisma.user.findUnique({
+        where: {
+          id: user['id'],
+        },
+      });
+      if (!theuser) throw new NotFoundException('User not found');
+      else {
+        const newProfile = await this.prisma.profile.update({
+          where: {
+            userId: theuser.id,
+          },
+          data: {
+            bio: data.bio,
+            status: data.status,
+            gender: data.gender,
+          },
+        });
+        return { success: true, profle: newProfile };
       }
     } catch (error) {
       throw new InternalServerErrorException(error.message);

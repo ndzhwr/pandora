@@ -1,4 +1,12 @@
-import { Body, Controller, Post, Put, Req, UploadedFile } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Post,
+  Put,
+  Req,
+  UploadedFile,
+} from '@nestjs/common';
 import { ProfileService } from './profile.service';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
@@ -30,5 +38,11 @@ export class ProfileController {
   ) {
     const user = req?.user;
     return this.profileService.updateProfilePicture(user, file);
+  }
+
+  @Delete('deleteProfile')
+  deleteProfile(@Req() req: Request) {
+    const user = req?.user;
+    return this.profileService.deleteProfile(user);
   }
 }

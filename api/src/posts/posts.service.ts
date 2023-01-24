@@ -84,5 +84,16 @@ export class PostsService {
   }
 
 
-  // async deletePost()
+  async deletePost(postId :  string){
+    try{
+      const post = await this.prisma.post.delete({
+        where: {
+          id: postId
+        }
+      })
+      return { success: true, data: post }
+    }catch(err :  any){
+      throw new InternalServerErrorException(err.message);
+    }
+  }
 }

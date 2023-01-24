@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Post,
   Put,
   Req,
@@ -39,5 +40,14 @@ export class PostsController {
     @Body() updatePostDto: UpdatePostDto
   ) {
     return this.postsService.updatePost(req.user, updatePostDto);
+  }
+
+  @Delete('deletePost')
+  @UseGuards(PostOwnerGuard)
+  async deletePost(
+    @Body() deletePostDto: { postId :  string}
+  ) {
+    const { postId } = deletePostDto;
+    return this.postsService.deletePost(postId);
   }
 }

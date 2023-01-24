@@ -8,7 +8,7 @@ import { JwtModule } from '@nestjs/jwt';
 import { config } from 'dotenv';
 import { ProfileModule } from './profile/profile.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
-import { ProfileController } from './profile/profile.controller';
+import { PostsModule } from './posts/posts.module';
 config();
 
 @Module({
@@ -21,12 +21,15 @@ config();
       signOptions: { expiresIn: '15m' },
     }),
     ProfileModule,
+    PostsModule,
   ],
   controllers: [AppController],
   providers: [AppService],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
-    consumer.apply(AuthMiddleware).forRoutes(ProfileController);
+    consumer
+      .apply(AuthMiddleware)
+      .forRoutes('/posts', '/profile', '/auth/deleteUser');
   }
 }

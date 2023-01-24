@@ -5,7 +5,6 @@ import {
 } from '@nestjs/common';
 import { GENDER } from '@prisma/client';
 import { GENDER as STRING_GENDER } from 'src/types';
-
 @Injectable()
 export class ParseGenderPipe implements PipeTransform {
   transform(value: any) {

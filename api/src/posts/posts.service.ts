@@ -2,9 +2,10 @@ import {
   Injectable,
   InternalServerErrorException,
   NotFoundException,
+  UnauthorizedException,
 } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-import { CreatePostDto } from 'src/types';
+import { CreatePostDto, UpdatePostDto } from 'src/types';
 import { UtilsService } from 'src/utils/utils.service';
 
 @Injectable()
@@ -21,7 +22,6 @@ export class PostsService {
     createPostDto: CreatePostDto,
     file: Express.Multer.File,
   ) {
-    console.log(user);
     try {
       const theuser = await this.prisma.user.findUnique({
         where: {
@@ -50,4 +50,39 @@ export class PostsService {
       throw new InternalServerErrorException(err.message);
     }
   }
+
+
+  async updatePost(
+    user: Express.User,
+    updatePostDto: UpdatePostDto
+  ) {
+    try {
+      const theuser = await this.prisma.user.findUnique({
+        where: {
+          id: user['id'],
+        },
+      });
+      if (!theuser) throw new NotFoundException('Such user not found');
+      const thepost = await this.prisma.post.findUnique({
+        where: {
+          id: updatePostDto.postId,
+        },
+      });
+      const post = await this.prisma.post.update({
+        where: {
+          id: updatePostDto.postId,
+        },
+        data: {
+          content: updatePostDto.content,
+        },
+      });
+
+      return post
+    } catch (err: any) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+
+  // async deletePost()
 }

@@ -17,7 +17,7 @@ export class PostOwnerGuard implements CanActivate {
   async canActivate(context: ExecutionContext): Promise<boolean> {
     const req: Request = context.switchToHttp().getRequest();
     const userId = req.user['id'];
-    const postId = req.query['postId']
+    const postId = req.query['postId'];
 
     const post = await this.prisma.post.findUnique({
       where: {

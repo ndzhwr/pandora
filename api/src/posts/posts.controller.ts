@@ -4,6 +4,7 @@ import {
   Delete,
   Post,
   Put,
+  Query,
   Req,
   UploadedFile,
   UseGuards,
@@ -35,19 +36,27 @@ export class PostsController {
 
   @Put('updatePost')
   @UseGuards(PostOwnerGuard)
-  async updatePost(
-    @Req() req: Request,
-    @Body() updatePostDto: UpdatePostDto
-  ) {
+  async updatePost(@Req() req: Request, @Body() updatePostDto: UpdatePostDto) {
     return this.postsService.updatePost(req.user, updatePostDto);
   }
 
   @Delete('deletePost')
   @UseGuards(PostOwnerGuard)
-  async deletePost(
-    @Body() deletePostDto: { postId :  string}
-  ) {
+  async deletePost(@Query() deletePostDto: { postId: string }) {
     const { postId } = deletePostDto;
     return this.postsService.deletePost(postId);
+  }
+
+  @Put('updatePostPicture')
+  @UseInterceptors(FileInterceptor('postPicture'))
+  @UseGuards(PostOwnerGuard)
+  async updatePostPicture(
+    @Req() req: Request,
+    @UploadedFile() file: Express.Multer.File,
+    @Query() updatePostDto: { postId: string },
+  ) {
+    const { postId } = updatePostDto;
+    console.log(postId);
+    return this.postsService.updatePostPicture(req.user, file, postId);
   }
 }

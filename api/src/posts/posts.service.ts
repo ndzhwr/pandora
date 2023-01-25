@@ -51,11 +51,7 @@ export class PostsService {
     }
   }
 
-
-  async updatePost(
-    user: Express.User,
-    updatePostDto: UpdatePostDto
-  ) {
+  async updatePost(user: Express.User, updatePostDto: UpdatePostDto) {
     try {
       const theuser = await this.prisma.user.findUnique({
         where: {
@@ -77,22 +73,48 @@ export class PostsService {
         },
       });
 
-      return post
+      return post;
     } catch (err: any) {
       throw new InternalServerErrorException(err.message);
     }
   }
 
-
-  async deletePost(postId :  string){
-    try{
+  async deletePost(postId: string) {
+    try {
       const post = await this.prisma.post.delete({
         where: {
-          id: postId
-        }
-      })
-      return { success: true, data: post }
-    }catch(err :  any){
+          id: postId,
+        },
+      });
+      return { success: true, data: post };
+    } catch (err: any) {
+      throw new InternalServerErrorException(err.message);
+    }
+  }
+
+  async updatePostPicture(
+    user: Express.User,
+    file: Express.Multer.File,
+    postId: string,
+  ) {
+    try {
+      const theuser = await this.prisma.user.findUnique({
+        where: {
+          id: user['id'],
+        },
+      });
+      if (!theuser) throw new NotFoundException('Such user not found');
+      const image = await this.utils.uploadFile(file);
+      const post = await this.prisma.post.update({
+        where: {
+          id: postId,
+        },
+        data: {
+          picture: image,
+        },
+      });
+      return { success: true, data: post };
+    } catch (err: any) {
       throw new InternalServerErrorException(err.message);
     }
   }

@@ -14,7 +14,7 @@ model User {
   id               String    @id @unique @default(uuid())
   email            String    @unique
   username         String?
-  posts            Post[]
+  posts            Post[]    @relation("author")
   createdAt        DateTime  @default(now())
   updatedAt        DateTime  @updatedAt
   password         String
@@ -24,18 +24,20 @@ model User {
   profile          Profile?
   sentMessages     Message[] @relation(name: "sender")
   receivedMessages Message[] @relation(name: "receiver")
-  comments          Comment[]
+  comments         Comment[]
+  Like             Like[]
 }
 
 model Post {
   id        String    @id @default(uuid())
   content   String?
-  author    User?     @relation(fields: [authorId], references: [id])
+  author    User?     @relation(name: "author", fields: [authorId], references: [id])
   authorId  String?
   picture   String
   comments  Comment[]
   createdAt DateTime  @default(now())
   updatedAt DateTime  @updatedAt
+  likes     Like[]    @relation(name: "likes")
 }
 
 model Profile {
@@ -73,6 +75,16 @@ model Comment {
   author    User?    @relation(fields: [authorId], references: [id])
   authorId  String?
   post      Post?    @relation(fields: [postId], references: [id])
+  postId    String?
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Like {
+  id        String   @id @default(uuid())
+  author    User?    @relation(fields: [authorId], references: [id])
+  authorId  String?
+  post      Post?    @relation(name: "likes", fields: [postId], references: [id])
   postId    String?
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt

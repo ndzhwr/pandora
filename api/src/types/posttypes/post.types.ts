@@ -22,3 +22,16 @@ export class UpdatePostDto {
   @IsUUID()
   public postId: string;
 }
+
+export class AddCommentDto {
+
+  @IsUUID()
+  @IsString()
+  postId :  string 
+
+  @IsString()
+  @MaxLength(200)
+  comment :  string
+
+}
+

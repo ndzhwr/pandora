@@ -2,6 +2,8 @@ import {
   Body,
   Controller,
   Delete,
+  Get,
+  NotAcceptableException,
   Post,
   Put,
   Query,
@@ -12,7 +14,7 @@ import {
 } from '@nestjs/common';
 import { Request } from 'express';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { CreatePostDto, UpdatePostDto } from 'src/types';
+import { CreatePostDto, UpdatePostDto, AddCommentDto } from 'src/types';
 import { PostsService } from './posts.service';
 import { PostOwnerGuard } from 'src/guards';
 
@@ -58,5 +60,60 @@ export class PostsController {
     const { postId } = updatePostDto;
     console.log(postId);
     return this.postsService.updatePostPicture(req.user, file, postId);
+  }
+
+  @Get('getUserPosts')
+  getPosts(
+    @Query() query: any
+  ) {
+    const { userId } = query
+    if (!userId) throw new NotAcceptableException("No user provided")
+    return this.postsService.getUserPosts(userId);
+  }
+
+  @Get('getAllPosts')
+  getAllPosts() {
+    return this.postsService.getAllPosts();
+  }
+
+  @Get('getNewPosts')
+  getNewPosts() {
+    return this.postsService.getNewPosts();
+  }
+
+  @Get('getPostById')
+  getPostById(@Query() query: any) {
+    const { postId } = query
+    if (!postId) throw new NotAcceptableException("Post Id not provided")
+    return this.postsService.getPostById(postId)
+  }
+
+  @Post('addCommentOnPost')
+  addCommentOnPost(
+    @Req() req: Request,
+    @Body() addCommentDto: AddCommentDto
+  ) {
+    const user = req?.user
+    return this.postsService.addCommentOnPost(user, addCommentDto)
+  }
+
+  @Delete('deleteCommentOnPost')
+  deleteCommentOnPost(
+    @Req() req: Request,
+    @Body() deleteCommentDto: { postId: string, commentId: string }
+  ) {
+    const user = req?.user
+    return this.postsService.deleteCommentOnPost(user, deleteCommentDto)
+  }
+
+
+  @Put('addLikeOnPost')
+  addLikeOnPost(
+    @Req() req: Request,
+    @Body() addLikeDto: { postId: string }
+  ) {
+    const user = req?.user
+    const { postId } = addLikeDto
+    return this.postsService.addLikeOnPost(user, postId)
   }
 }

@@ -20,7 +20,6 @@ export class ProfileController {
   constructor() {
     this.profileService = new ProfileService();
   }
-
   @Post('create')
   @UsePipes(ParseGenderPipe)
   @UseInterceptors(FileInterceptor('profilePicture'))
@@ -62,5 +61,24 @@ export class ProfileController {
   ) {
     const user = req?.user;
     return this.profileService.updateProfileFields(user, data);
+  }
+
+  @Put('followUser')
+  followUser(
+    @Req() req: Request,
+    @Body() data: { userId: string }
+  ) {
+    const user = req?.user;
+    return this.profileService.followUser(user, data.userId);
+  }
+
+
+  @Put('unfollowUser')
+  unfollowUser(
+    @Req() req: Request,
+    @Body() data: { userId: string }
+  ) {
+    const user = req?.user;
+    return this.profileService.unfollowUser(user, data.userId);
   }
 }

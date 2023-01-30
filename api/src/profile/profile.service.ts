@@ -4,6 +4,7 @@ import {
   NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
+
 import { User } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { UserProfileDto } from 'src/types';
@@ -124,6 +125,8 @@ export class ProfileService {
     }
   }
 
+
+
   async updateProfileFields(
     user: Express.User,
     data: {
@@ -154,6 +157,117 @@ export class ProfileService {
       }
     } catch (error) {
       throw new InternalServerErrorException(error.message);
+    }
+  }
+
+
+
+  async followUser(user: Express.User, userId: string) {
+    try {
+      if (user['id'] == userId) throw new NotAcceptableException('You cannot follow yourself')
+      // Check if user exists
+      if (! await this.prisma.user.findUnique({
+        where: {
+          id: userId
+        },
+      })
+      ) throw new NotFoundException('Following user not found');
+
+      // Check if user is already following
+      if (await this.prisma.followers.findFirst({
+        where: {
+          AND: [
+            {
+              userId: user['id']
+            },
+            {
+              followers: {
+                some: {
+                  id: userId
+                }
+              }
+            }
+          ]
+        }
+      })
+      ) { throw new NotAcceptableException("You're already following the user") }
+
+      if (await this.prisma.followers.findUnique({ where: { userId: user['id'] } })) {
+        const newFollow = await this.prisma.followers.update({
+          where: {
+            userId: user['id']
+          },
+          data: {
+            followers: {
+              connect: {
+                id: userId,
+              },
+            },
+          },
+        });
+        return { success: true, data: newFollow };
+      } else {
+        const newFollow = await this.prisma.followers.create({
+          data: {
+            user: {
+              connect: {
+                id: user['id'],
+              },
+            }
+          }
+        });
+        return { success: true, data: newFollow };
+      }
+
+    } catch (error) {
+      console.log(error)
+      throw new InternalServerErrorException(error.message);
+    }
+  }
+
+  async unfollowUser(user: Express.User, userId: string) {
+    if (user['id'] == userId) throw new NotAcceptableException('You cannot unfollow yourself')
+    const theuser = await this.prisma.user.findUnique({
+      where: {
+        id: user['id'],
+      },
+    });
+    if (!theuser) throw new NotFoundException('User not found');
+    if (!
+      await this.prisma.followers.findFirst({
+        where: {
+          AND: [
+            {
+              userId: user['id']
+            },
+            {
+              followers: {
+                some: {
+                  id: userId
+                }
+              }
+            }
+          ]
+        }
+      })
+    ) {
+      throw new NotAcceptableException("You don't follow the user")
+    }
+    else {
+      const newFollower = await this.prisma.followers.update({
+        where: {
+          userId: theuser['id']
+        },
+        data: {
+          followers: {
+            delete: {
+              id: userId
+            }
+          }
+        }
+      })
+
+      return { success: true, profle: newFollower };
     }
   }
 }

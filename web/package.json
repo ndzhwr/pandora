@@ -9,8 +9,15 @@
     "lint": "next lint --fix"
   },
   "dependencies": {
+    "@types/axios": "^0.14.0",
+    "@types/dotenv": "^8.2.0",
+    "@types/node": "^18.11.18",
+    "@types/nprogress": "^0.2.0",
     "autoprefixer": "^10.4.13",
+    "axios": "^1.2.6",
+    "dotenv": "^16.0.3",
     "next": "12.2.6",
+    "nprogress": "^0.2.0",
     "postcss": "8.1.0",
     "react": "18.2.0",
     "react-dom": "18.2.0",

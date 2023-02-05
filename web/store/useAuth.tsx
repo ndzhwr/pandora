@@ -3,17 +3,20 @@ import React, {
 } from 'react';
 import { useRouter } from "next/router";
 import { api } from '../utils/api';
+import { data } from 'autoprefixer';
 
 
 // context content types
 interface IAuth {
+    tokens: { accessToken: string, refreshToken: string }
     user: any | null
-    signUp: (username : string,email: string, password: string, confirmPassword : string) => Promise<void>
+    signUp: (username: string, email: string, password: string, confirmPassword: string) => Promise<any>
     signIn: (data: SigninProps) => Promise<void>
     logout: () => Promise<void>
     error: string | null
     loading: boolean,
     setError: React.Dispatch<React.SetStateAction<string>>
+    setTokens: React.Dispatch<React.SetStateAction<any>>
 }
 
 interface SigninProps {
@@ -30,13 +33,15 @@ interface Props {
 
 // creating auth context
 const AuthContext = createContext<IAuth>({
+    tokens: { accessToken: "", refreshToken: "" },
     user: null,
     signUp: async () => { },
     signIn: async () => { },
     logout: async () => { },
     error: null,
     loading: false,
-    setError: () => { }
+    setError: () => { },
+    setTokens: () => { }
 });
 
 
@@ -48,6 +53,7 @@ export const AuthProvider = ({ children }: Props) => {
     const [user, setUser] = React.useState<any | null>(null);
     const [error, setError] = React.useState<string | null>(null);
     const [loading, setLoading] = React.useState<boolean>(true);
+    const [tokens, setTokens] = React.useState<any>({ accessToken: "", refreshToken: "" })
 
     // use effect which will run for each time a user accesses our application.
     React.useEffect(() => {
@@ -72,9 +78,23 @@ export const AuthProvider = ({ children }: Props) => {
         ----------------
         this function will be used to sign up a user.
     */
-    const signUp = async (username : string,email: string, password: string, confirmPassword : string ) => {
+    const signUp = async (username: string, email: string, password: string, confirmPassword: string): Promise<{ error?: string, success?: boolean }> => {
         try {
-            // call api endpoint to create a new user
+            const res = await api.post("/auth/signup", {
+                username,
+                email,
+                password,
+                confirmPassword
+            },{
+
+            })
+            console.log(res);
+            if (res.data.error)
+                return { error: res.data.message }
+            else
+                setTokens({ ...res.data.tokens })
+                router.push('/feed')
+
         } catch (error) {
             setError(error.message);
         }
@@ -89,9 +109,9 @@ export const AuthProvider = ({ children }: Props) => {
 
     const signIn = async (data: SigninProps) => {
         setLoading(true)
-        await api.post("/user/login", {
+        await api.post("/auth/signup", {
             username: data.username,
-            password: data.password
+            password: data.password,
         }).then(({ data }) => {
             if (data.status === 404) {
                 setError("Invalid Credentials!")
@@ -126,7 +146,7 @@ export const AuthProvider = ({ children }: Props) => {
 
     // actual auth context
     return (
-        <AuthContext.Provider value={{ user, signUp, signIn, logout, error, setError, loading }}>
+        <AuthContext.Provider value={{ tokens, user, signUp, signIn, logout, error, setError, loading, setTokens }}>
             {children}
         </AuthContext.Provider>
     );

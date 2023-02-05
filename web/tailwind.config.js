@@ -11,7 +11,10 @@ module.exports = {
         "offwhite" : "#D9DBE9",
         "placeholder" :"#9DA2B1",
         "darkblue" : "#21273D"
-
+      },
+      screens : {
+        "sm" : "320px",
+        "msm" : "0px"
       }
     },
   },

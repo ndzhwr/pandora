@@ -1,14 +1,16 @@
-import React, { useContext } from "react";
+import React, { useContext, useEffect } from "react";
 import Icon from '../public/icon.svg'
 import { type NextPage } from "next";
 import TextInput from "../components/TextInput";
 import Image from "next/image";
+import { useRouter } from "next/router";
 import { useAuth } from "../store/useAuth";
 import { AuthProvider } from "../store/useAuth";
 
 
 
 const Home: NextPage = () => {
+    const router = useRouter()
     const [username, setUsername] = React.useState<string>("")
     const [email, setEmail] = React.useState<string>("")
     const [password, setPassword] = React.useState<string>("")
@@ -18,6 +20,11 @@ const Home: NextPage = () => {
         e.preventDefault()
         await signUp(username, email, password, confirmPassword);
     }
+
+    useEffect(() => {
+      console.log(router.pathname);
+
+    },[router])
     return (
 
         <div style={{
@@ -33,9 +40,9 @@ const Home: NextPage = () => {
                 <p className="text-placeholder mt-4 text-normal">Welcome in the rocket, <br /> We're really amazed you've maanaged to reach here, <br />Let's get you signed up</p>
                 <button className="text-primary flex items-center mt-4 cursor-pointer">I already have an account &nbsp;&gt;&gt; </button>
             </div>
-            <div className="w-1/2  bg-white h-full px-28 py-6 w-">
+            <div className="md:w-1/2  bg-white h-full msm:w-full  md:px-20 msm:px-[2vw]  py-6 ">
 
-                <form className="">
+                <form className="w-3/5  msm:w-5/6 mx-auto">
                     <div className="p-6 bg-offwhite w-fit rounded-full mx-auto flex align-center items-between">
                         <Image src={Icon.src} width={Icon.width} height={Icon.height} className="shadow-sm" />
                     </div>

@@ -4,5 +4,5 @@
 @tailwind components;
 
 * {
-    font-family: 'DM Sans', sans-serif, system-ui;
+    font-family: system-ui;
 }

@@ -1,4 +1,8 @@
-import { Injectable, NotAcceptableException, NotFoundException } from '@nestjs/common';
+import {
+  Injectable,
+  NotAcceptableException,
+  NotFoundException,
+} from '@nestjs/common';
 import { AuthTokens, LoginDto, SignupDto } from '../types';
 import { hash, compare } from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
@@ -45,18 +49,18 @@ export class AuthService {
           password: await this.hash(signupDto.password),
           refreshToken: '',
         },
-        select : {
-          id : true ,
-          username : true ,
-          email : true ,    
-          profile : {
-            select : {
-              profilePicture : true ,
-              bio : true ,
-              status :  true,
-            }
-          }
-        }
+        select: {
+          id: true,
+          username: true,
+          email: true,
+          profile: {
+            select: {
+              profilePicture: true,
+              bio: true,
+              status: true,
+            },
+          },
+        },
       });
       transactionProxy.transacted = true;
       transactionProxy.userId = user.id;
@@ -68,7 +72,13 @@ export class AuthService {
         where: { id: user.id },
         data: { refreshToken: tokens.refreshToken },
       });
-      return { tokens : { accessToken : tokens.accessToken, refreshToken : tokens.refreshToken} , user : user};
+      return {
+        tokens: {
+          accessToken: tokens.accessToken,
+          refreshToken: tokens.refreshToken,
+        },
+        user: user,
+      };
     } catch (err: any) {
       if (err instanceof PrismaClientKnownRequestError) console.log(err);
       if (transactionProxy.transacted) {
@@ -116,7 +126,8 @@ export class AuthService {
       },
     });
     if (!user) throw new NotAcceptableException('Invalid credentials');
-    if(!await this.prisma.user.findUnique({ where : { id   }})) throw new NotFoundException("Sorry, we couldn't find that user");
+    if (!(await this.prisma.user.findUnique({ where: { id } })))
+      throw new NotFoundException("Sorry, we couldn't find that user");
     await this.prisma.user.delete({
       where: { id: id },
     });

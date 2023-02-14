@@ -64,20 +64,13 @@ export class ProfileController {
   }
 
   @Put('followUser')
-  followUser(
-    @Req() req: Request,
-    @Body() data: { userId: string }
-  ) {
+  followUser(@Req() req: Request, @Body() data: { userId: string }) {
     const user = req?.user;
     return this.profileService.followUser(user, data.userId);
   }
 
-
   @Put('unfollowUser')
-  unfollowUser(
-    @Req() req: Request,
-    @Body() data: { userId: string }
-  ) {
+  unfollowUser(@Req() req: Request, @Body() data: { userId: string }) {
     const user = req?.user;
     return this.profileService.unfollowUser(user, data.userId);
   }

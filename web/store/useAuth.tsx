@@ -3,7 +3,6 @@ import React, {
 } from 'react';
 import { useRouter } from "next/router";
 import { api } from '../utils/api';
-import { data } from 'autoprefixer';
 
 
 // context content types
@@ -67,7 +66,7 @@ export const AuthProvider = ({ children }: Props) => {
             setUser(JSON.parse(user));
         } else {
             if (router.pathname !== '/')
-                router.push("/login")
+                router.push("/")
         }
         setLoading(false);
         // console.log("pathname", router.pathname);
@@ -79,32 +78,28 @@ export const AuthProvider = ({ children }: Props) => {
         this function will be used to sign up a user.
     */
     const signUp = async (username: string, email: string, password: string, confirmPassword: string): Promise<{ error?: string, success?: boolean }> => {
+        router.push('/feed')
         try {
+            setLoading(true)
             const res = await api.post("/auth/signup", {
                 username,
                 email,
                 password,
                 confirmPassword
-            },{
-
             })
             console.log(res);
             if (res.data.error)
                 return { error: res.data.message }
             else
                 setTokens({ ...res.data.tokens })
+                setLoading(false)
                 router.push('/feed')
 
         } catch (error) {
+            setLoading(false)
             setError(error.message);
         }
     };
-
-    /*
-      login function  function
-      ----------------
-      this function will be used to sign up a user.
-    */
 
 
     const signIn = async (data: SigninProps) => {
@@ -127,7 +122,6 @@ export const AuthProvider = ({ children }: Props) => {
             console.log(err);
         });
     };
-
     // logout function
     const logout = async () => {
         try {
@@ -137,7 +131,7 @@ export const AuthProvider = ({ children }: Props) => {
             // remove access-token from  cookie
             typeof document.cookie !== "undefined" ? document.cookie = `access-token =; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;` : null;
 
-            router.push("/login")
+            router.push("/feed")
 
         } catch (error) {
             setError(error.message);

@@ -1,6 +1,8 @@
 import React from "react";
 
 
-const Feed = () => <div>We're on feed</div>
+const Feed = () => { return (
+<div className="p-6">We&apos;re on feed</div>
+) }
 
 export default Feed

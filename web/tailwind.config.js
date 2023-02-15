@@ -3,11 +3,12 @@ module.exports = {
   content: [
     "./pages/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
+    "./layouts/**/*.{js,ts,jsx,tsx}",
   ],
   theme: {
     extend: {
       colors : {
-        "primary" : "#482FF7",
+        "primary" : "#000",
         "offwhite" : "#D9DBE9",
         "placeholder" :"#9DA2B1",
         "darkblue" : "#21273D"

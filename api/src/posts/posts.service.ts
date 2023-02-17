@@ -114,7 +114,7 @@ export class PostsService {
         include: {
           likes: true,
           author: true,
-        }
+        },
       });
       return { success: true, data: post };
     } catch (err: any) {
@@ -124,21 +124,19 @@ export class PostsService {
 
   async getUserPosts(userId: string) {
     try {
-
       const posts = await this.prisma.post.findMany({
         where: {
-          authorId: userId
+          authorId: userId,
         },
         include: {
           comments: true,
-          author: true
-        }
-      })
-      return { success: true, data: posts }
+          author: true,
+        },
+      });
+      return { success: true, data: posts };
     } catch (err: any) {
-      throw new InternalServerErrorException(err.message)
+      throw new InternalServerErrorException(err.message);
     }
-
   }
 
   async getAllPosts() {
@@ -146,158 +144,169 @@ export class PostsService {
       const posts = await this.prisma.post.findMany({
         include: {
           comments: true,
-          author: true
-        }
-      })
-      return { success: true, data: posts }
+          author: true,
+        },
+      });
+      return { success: true, data: posts };
     } catch (err: any) {
-      throw new InternalServerErrorException(err.message)
+      throw new InternalServerErrorException(err.message);
     }
   }
-
 
   async getNewPosts() {
     try {
       const posts = await this.prisma.post.findMany({
         include: {
           comments: true,
-          author: true
+          author: true,
         },
         orderBy: {
-          createdAt: 'desc'
-        }
-      })
-      return { success: true, data: posts }
+          createdAt: 'desc',
+        },
+      });
+      return { success: true, data: posts };
     } catch (error) {
-      throw new InternalServerErrorException(error.message)
+      throw new InternalServerErrorException(error.message);
     }
   }
-
 
   async getPostById(postId: string) {
     try {
       const post = await this.prisma.post.findUnique({
         where: {
-          id: postId
+          id: postId,
         },
         include: {
           author: true,
-          comments: true
-        }
-      })
-      return { success: true, data: post }
+          comments: true,
+        },
+      });
+      return { success: true, data: post };
     } catch (error) {
-      throw new InternalServerErrorException(error.message)
+      throw new InternalServerErrorException(error.message);
     }
   }
 
   async addCommentOnPost(user: Express.User, addCommentDto: AddCommentDto) {
     try {
-
       const updatedPost = await this.prisma.comment.create({
         data: {
           comment: addCommentDto.comment,
           author: {
             connect: {
-              id: user['id']
-            }
+              id: user['id'],
+            },
           },
           post: {
             connect: {
-              id: addCommentDto.postId
-            }
-          }
+              id: addCommentDto.postId,
+            },
+          },
         },
         include: {
           author: true,
           post: {
-            include : {
-              likes : true
-            }
-          }
-        }
-      })
-      return { success: true, data: updatedPost }
+            include: {
+              likes: true,
+            },
+          },
+        },
+      });
+      return { success: true, data: updatedPost };
     } catch (err) {
-      console.log(err)
-      throw new InternalServerErrorException(err.message)
+      console.log(err);
+      throw new InternalServerErrorException(err.message);
     }
   }
 
-
-  async deleteCommentOnPost(user: Express.User, deleteCommentDto: { postId: string, commentId: string }) {
+  async deleteCommentOnPost(
+    user: Express.User,
+    deleteCommentDto: { postId: string; commentId: string },
+  ) {
     try {
       const thecomment = await this.prisma.comment.findFirst({
         where: {
           AND: [
             {
-              id: deleteCommentDto.commentId
+              id: deleteCommentDto.commentId,
             },
             {
               author: {
-                id: user['id']
-              }
+                id: user['id'],
+              },
             },
             {
               post: {
-                id: deleteCommentDto.postId
-              }
-            }
-          ]
-        }
-      })
-      if (!thecomment) throw new NotFoundException('You might not be the author of the comment')
+                id: deleteCommentDto.postId,
+              },
+            },
+          ],
+        },
+      });
+      if (!thecomment)
+        throw new NotFoundException(
+          'You might not be the author of the comment',
+        );
       const deletedPost = await this.prisma.comment.delete({
         where: {
-          id: deleteCommentDto.commentId
+          id: deleteCommentDto.commentId,
         },
-      })
-      return { success: true, data: deletedPost }
+      });
+      return { success: true, data: deletedPost };
     } catch (error) {
-      throw new InternalServerErrorException(error.message)
+      throw new InternalServerErrorException(error.message);
     }
   }
 
-
   async addLikeOnPost(user: Express.User, postId: string) {
     try {
-      const thepost = await this.prisma.post.findUnique({ where: { id: postId } })
-      if (!thepost) throw new NotFoundException("POst not found")
-      const theuser = await this.prisma.user.findUnique({ where: { id: user['id'] } })
-      if (!theuser) throw new NotFoundException("User not found")
+      const thepost = await this.prisma.post.findUnique({
+        where: { id: postId },
+      });
+      if (!thepost) throw new NotFoundException('POst not found');
+      const theuser = await this.prisma.user.findUnique({
+        where: { id: user['id'] },
+      });
+      if (!theuser) throw new NotFoundException('User not found');
       const likeExists = await this.prisma.like.findFirst({
-        where: { AND: [{ authorId: theuser.id }, { postId: thepost.id }] }
-      })
+        where: { AND: [{ authorId: theuser.id }, { postId: thepost.id }] },
+      });
       if (likeExists) {
-        const deletedLike = await this.prisma.like.delete({ where: { id: likeExists.id }, include: { author: true, post: true } })
+        const deletedLike = await this.prisma.like.delete({
+          where: { id: likeExists.id },
+          include: { author: true, post: true },
+        });
         return {
           success: true,
-          task: "UNLIKED",
-          data: deletedLike
-        }
+          task: 'UNLIKED',
+          data: deletedLike,
+        };
       }
       await this.prisma.like.create({
         data: {
           author: {
             connect: {
-              id: user['id']
-            }
+              id: user['id'],
+            },
           },
           post: {
             connect: {
-              id: thepost.id
-            }
-          }
-        }
-      })
-      const likedpost = await this.prisma.post.findUnique({ where: { id: postId }, include: { likes: true } })
+              id: thepost.id,
+            },
+          },
+        },
+      });
+      const likedpost = await this.prisma.post.findUnique({
+        where: { id: postId },
+        include: { likes: true },
+      });
       return {
         success: true,
-        task: "LIKED",
-        data: likedpost
-      }
+        task: 'LIKED',
+        data: likedpost,
+      };
     } catch (err: any) {
-      throw new InternalServerErrorException(err.message)
+      throw new InternalServerErrorException(err.message);
     }
   }
 }

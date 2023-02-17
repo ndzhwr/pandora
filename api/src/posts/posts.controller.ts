@@ -63,11 +63,9 @@ export class PostsController {
   }
 
   @Get('getUserPosts')
-  getPosts(
-    @Query() query: any
-  ) {
-    const { userId } = query
-    if (!userId) throw new NotAcceptableException("No user provided")
+  getPosts(@Query() query: any) {
+    const { userId } = query;
+    if (!userId) throw new NotAcceptableException('No user provided');
     return this.postsService.getUserPosts(userId);
   }
 
@@ -83,37 +81,30 @@ export class PostsController {
 
   @Get('getPostById')
   getPostById(@Query() query: any) {
-    const { postId } = query
-    if (!postId) throw new NotAcceptableException("Post Id not provided")
-    return this.postsService.getPostById(postId)
+    const { postId } = query;
+    if (!postId) throw new NotAcceptableException('Post Id not provided');
+    return this.postsService.getPostById(postId);
   }
 
   @Post('addCommentOnPost')
-  addCommentOnPost(
-    @Req() req: Request,
-    @Body() addCommentDto: AddCommentDto
-  ) {
-    const user = req?.user
-    return this.postsService.addCommentOnPost(user, addCommentDto)
+  addCommentOnPost(@Req() req: Request, @Body() addCommentDto: AddCommentDto) {
+    const user = req?.user;
+    return this.postsService.addCommentOnPost(user, addCommentDto);
   }
 
   @Delete('deleteCommentOnPost')
   deleteCommentOnPost(
     @Req() req: Request,
-    @Body() deleteCommentDto: { postId: string, commentId: string }
+    @Body() deleteCommentDto: { postId: string; commentId: string },
   ) {
-    const user = req?.user
-    return this.postsService.deleteCommentOnPost(user, deleteCommentDto)
+    const user = req?.user;
+    return this.postsService.deleteCommentOnPost(user, deleteCommentDto);
   }
 
-
   @Put('addLikeOnPost')
-  addLikeOnPost(
-    @Req() req: Request,
-    @Body() addLikeDto: { postId: string }
-  ) {
-    const user = req?.user
-    const { postId } = addLikeDto
-    return this.postsService.addLikeOnPost(user, postId)
+  addLikeOnPost(@Req() req: Request, @Body() addLikeDto: { postId: string }) {
+    const user = req?.user;
+    const { postId } = addLikeDto;
+    return this.postsService.addLikeOnPost(user, postId);
   }
 }

@@ -3,6 +3,7 @@
 @tailwind utilities;
 @tailwind components;
 
-* {
+/* * {
     font-family: system-ui;
-}
+} */
+body { font-family: sans-serif; }

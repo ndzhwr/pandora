@@ -6,7 +6,6 @@ import SmallUser from "../../components/User/SmallUser";
 const Feed = () => {
     React.useEffect(() => {
        console.log("Hello world");
-       
     }, [])
     return (
         <div className="p-6  w-full flex ">

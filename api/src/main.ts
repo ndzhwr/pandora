@@ -4,25 +4,15 @@ import { Logger } from '@nestjs/common';
 import { config } from 'dotenv';
 // import * as cors from 'cors';
 import { env } from 'process';
+import { LoggerMiddleware } from './middlewares';
 declare const module: any;
 config();
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(env.PORT);
   app.enableCors({
-    origin: 'http://localhost:3000',
-    allowedHeaders: ['Access-Control-Allow-Origin'],
+    origin: ['http://localhost:3000', 'http://pandora-monorepo-web.vercel.app'],
   });
-  // app.use(
-  //   cors({
-  //     origin: [
-  //       'http://localhost:3000',
-  //       'https://pandora-monorepo-web.vercel.com',
-  //     ],
-  //     credentials: true,
-  //     optionsSuccessStatus: 200,
-  //   }),
-  // );
+  await app.listen(env.PORT);
   app.useLogger(new Logger());
   if (module.hot) {
     module.hot.accept();

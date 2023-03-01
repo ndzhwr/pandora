@@ -12,10 +12,12 @@ const Home: NextPage = () => {
     const [signupPassword, setSignupPassword] = React.useState<string>("")
     const [confirmPassword, setConfirmPassword] = React.useState<string>()
     const [auth, setAuth] = useState<"signup" | "login">("signup")
-    const { signUp, loading } = useAuth();
+    const { signUp, loading, error } = useAuth();
     const handleSubmit = async (e: any) => {
         e.preventDefault()
-        await signUp(username, email, signupPassword, confirmPassword);
+        const { message, success } = await signUp(username, email, signupPassword, confirmPassword);
+        if (success)
+            router.push('/feed')
     }
     useEffect(() => {
         router.push({
@@ -35,9 +37,9 @@ const Home: NextPage = () => {
             {auth == "signup" ? (
                 <div style={{
                 }} className="bg-cover bg-no-repeat bg-offwhite  bg-opacity-30  items-center justify-between flex w-full h-screen">
-                    <div className="md:w-1/2 md:px-36  mx-auto  h-full msm:w-full msm:px-4  py-6  flex justify-start items-center  bg-blend-multiply">
+                    <div className="lg:w-1/2 md:px-36  mx-auto  h-full msm:w-full msm:px-4  py-6  flex justify-start items-center  bg-blend-multiply">
                         <form className="md:w-full  mx-auto bg-white md:p-10  msm:p-4 py-6">
-                            <ErrorMessage message="An error occured"></ErrorMessage>
+                            {error && <ErrorMessage message={error}></ErrorMessage>}
                             <h4 className="font-mono">Pandora</h4>
                             <h1 className="font-bold text-4xl w-fit text-darkblue  py-4">Sign up</h1>
                             <TextInput key="username" placeholder="Choose a username" withLabel label="Username" setStateHook={setUsername} />

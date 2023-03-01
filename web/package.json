@@ -9,6 +9,7 @@
     "lint": "next lint --fix"
   },
   "dependencies": {
+    "@fontsource/alexandria": "^4.5.1",
     "@types/axios": "^0.14.0",
     "@types/dotenv": "^8.2.0",
     "@types/node": "^18.11.18",

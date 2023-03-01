@@ -3,10 +3,23 @@ import React, {
 } from 'react';
 import { useRouter } from "next/router";
 import { api } from '../utils/api';
+import axios from 'axios';
+import { setCookie } from '../utils/cookie';
 
+interface User {
+    id: string,
+    username: string,
+    email: string,
+    profile?: {
+        bio?: string,
+        status?: string,
+        gender: string,
+        profilePicture?: string
+    },
+}
 
 // context content types
-interface IAuth {
+interface   IAuth {
     tokens: { accessToken: string, refreshToken: string }
     user: any | null
     signUp: (username: string, email: string, password: string, confirmPassword: string) => Promise<any>
@@ -56,19 +69,16 @@ export const AuthProvider = ({ children }: Props) => {
 
     // use effect which will run for each time a user accesses our application.
     React.useEffect(() => {
-
-        /* we are going to use localStorage for user storage
-            but we will leter use cookies when integrated with backend.
-        */
-        setLoading(true);
-        const user = localStorage.getItem('user');
-        if (user) {
-            setUser(JSON.parse(user));
-        } else {
-            if (router.pathname !== '/')
-                router.push("/")
-        }
-        setLoading(false);
+        // setLoading(true);
+        // const user = localStorage.getItem('user');
+        // if (user) {
+        //     setUser(JSON.parse(user));
+        //     if (router.pathname == '/') router.push('/feed')
+        // } else {
+        //     if (router.pathname !== '/')
+        //         router.push("/feed")
+        // }
+        // setLoading(false);
         // console.log("pathname", router.pathname);
     }, [router.pathname]);
 
@@ -78,33 +88,47 @@ export const AuthProvider = ({ children }: Props) => {
         this function will be used to sign up a user.
     */
     const signUp = async (username: string, email: string, password: string, confirmPassword: string): Promise<{ error?: string, success?: boolean }> => {
-        router.push('/feed')
         try {
             setLoading(true)
-            const res = await api.post("/auth/signup", {
+            const res = await api().post("/auth/signup", {
                 username,
                 email,
                 password,
                 confirmPassword
             })
-            console.log(res);
-            if (res.data.error)
-                return { error: res.data.message }
-            else
-                setTokens({ ...res.data.tokens })
-                setLoading(false)
-                router.push('/feed')
+            console.log(res.status);
+
+            const data = res.data;
+
+            console.log(data);
+            if (data.error)
+                return { success:  false, error: data.message }
+            else {
+                setTokens({ ...data.tokens })
+                data.tokens.forEach((key: string,value: string) => {
+                    setCookie(key,value)
+                })
+                localStorage.setItem('user', JSON.stringify({ ...data.user }))
+                setUser({ ...data.user })
+            }
+            setLoading(false)
+            return {
+	        error :  null,
+                success: true
+            }
+
 
         } catch (error) {
             setLoading(false)
-            setError(error.message);
+	    setError(error.message);
+	    return {error : error.message, success :false}
         }
     };
 
 
     const signIn = async (data: SigninProps) => {
         setLoading(true)
-        await api.post("/auth/signup", {
+        await api().post("/auth/signup", {
             username: data.username,
             password: data.password,
         }).then(({ data }) => {
@@ -125,13 +149,13 @@ export const AuthProvider = ({ children }: Props) => {
     // logout function
     const logout = async () => {
         try {
+            const res = await api().put('/auth/logout')
             setUser(null);
             localStorage.removeItem("user");
             setLoading(false);
             // remove access-token from  cookie
             typeof document.cookie !== "undefined" ? document.cookie = `access-token =; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;` : null;
-
-            router.push("/feed")
+            router.push("/")
 
         } catch (error) {
             setError(error.message);

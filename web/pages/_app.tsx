@@ -1,5 +1,5 @@
 import Head from 'next/head'
-import React, { useContext } from 'react'
+import '@fontsource/alexandria'
 import '../styles/globals.css'
 import { AuthProvider, useAuth } from '../store/useAuth'
 import MainLayout from '../layouts/MainLayout'

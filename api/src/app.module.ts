@@ -9,6 +9,7 @@ import { config } from 'dotenv';
 import { ProfileModule } from './profile/profile.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { PostsModule } from './posts/posts.module';
+import { LoggerMiddleware } from './middlewares';
 config();
 
 @Module({

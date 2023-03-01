@@ -1,13 +1,13 @@
 import axios from 'axios'
-// import { config } from 'dotenv';
-// config();
+import { getCookie }  from './cookie' 
+export const api = () => {
+    const token = getCookie("accessToken");
+    return axios.create({
+        baseURL: 'http://localhost:5000',
+        // baseURL: "https://pandora-monorepo-api.onrender.com"
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
 
-export const api = axios.create({
-    baseURL: 'http://localhost:5000',
-    headers: {
-        "Access-Control-Allow-Origin": "*",
-        withCredentials: true,
-        crossDomain: true,
-    }
-    // baseURL: "https://pandora-monorepo-api.onrender.com"
-})
+    })
+}

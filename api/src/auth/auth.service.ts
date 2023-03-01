@@ -1,5 +1,6 @@
 import {
   Injectable,
+  InternalServerErrorException,
   NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
@@ -134,7 +135,31 @@ export class AuthService {
     return { success: true, message: 'Account deleted' };
   }
 
+
+  async logout(userId : string){
+    try {
+      const user = await this.prisma.user.update({
+        where : {
+          id :  userId
+        },
+        data : {
+          refreshToken : ""
+        }
+      })
+
+      if(!user) throw new NotFoundException('User not found')
+      return {
+        success: true ,
+        message : 'User logout successful'
+      }
+    } catch (error) {
+      throw new InternalServerErrorException(error.message)
+    }
+  }
+
   private async hash(password: string): Promise<string> {
+    console.log(password);
+
     const hashed = await hash(password, 10);
     return hashed;
   }

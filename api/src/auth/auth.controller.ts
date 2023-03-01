@@ -1,4 +1,4 @@
-import { Body, Controller, Delete, Post, Req } from '@nestjs/common';
+import { Body, Controller, Delete, Post, Put, Req } from '@nestjs/common';
 import { NotAcceptableException } from '@nestjs/common/exceptions';
 import { Request } from 'express';
 import { SignupDto, LoginDto } from '../types';
@@ -9,9 +9,10 @@ export class AuthController {
   constructor() {
     this.authService = new AuthService();
   }
-  @Post('signup.json')
+  @Post('signup')
   signup(@Body() signupDto: SignupDto) {
     const { password, confirmPassword }: SignupDto = signupDto;
+    console.log(signupDto);
     if (password !== confirmPassword)
       throw new NotAcceptableException('Passwords do not match');
     return this.authService.signup(signupDto);
@@ -29,5 +30,15 @@ export class AuthController {
   }> {
     const userId = req.user['id'];
     return this.authService.deleleAccount(userId);
+  }
+
+  @Put('logout')
+  logout(@Req() req: Request) : Promise<{
+    success: boolean;
+    message: string;
+  }> {
+    const userId = req.user['id'];
+    return this.authService.logout(userId)
+
   }
 }

@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 import data from '../assets/data/data.json'
 import SmallUser from "../components/User/SmallUser";
 import AddComment from "../components/post/AddComment";
+import Loader from "../components/Loader";
 interface MainLayoutProps {
     children: React.ReactNode
 }
@@ -18,21 +19,22 @@ const MainLayout: React.FC<MainLayoutProps> = (props: MainLayoutProps) => {
 
 
     const handleClosePortal = () => {
-        router.push({
-            pathname : router.pathname ,
-        })
+        // router.push({
+        //     pathname : router.pathname ,
+        // })
+        history.back()
     }
 
     return (
         <>
-            <div className={`flex w-screen  h-full min-h-screen min-w-screen relative`}>
+            <div className={`flex h-full min-h-screen min-w-screen relative`}>
                 <div className={`py-6 px-10  max-h-screen sticky top-0 ${router.pathname == "/" && "hidden"} border-r `}>
                     <div className="p-6 border-right  flex flex-col justify-between h-full">
                         <div>
                             <h4 className="text-2xl ">Pandora</h4>
                             {
                                 data.sections.map((section, index) => (
-                                    <button className="flex items-center gap-4 pl-4 pr-20 py-3   my-4 hover:bg-slate-50 duration-100" key={index} onClick={() => router.push(section.name)}>
+                                    <button className="flex items-center gap-4 pl-4 pr-20 py-3   my-4 hover:bg-slate-50 duration-100" key={index} onClick={() => router.push(`/${section.name != "profile" ? section.name : localStorage.getItem("userId")}`)}>
                                         <img className="opacity-90" src={section.icon} alt="" /><span className="capitalize">{section.name}</span>
                                     </button>
                                 ))
@@ -66,7 +68,7 @@ const MainLayout: React.FC<MainLayoutProps> = (props: MainLayoutProps) => {
                 )}
                 {!postData &&
                     <div className="w-full h-fulll flex items-center justify-between">
-                        <section id="myelement" className="h-8 border  rounded-full w-8  border-slate-700 mx-auto animate-spin"></section>
+                        <Loader/>
                     </div>
 
                 }

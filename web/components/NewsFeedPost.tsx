@@ -1,5 +1,6 @@
 import Image from "next/image";
-import { useRouter } from "next/router";
+import { useRouter } from "next/router"
+import Link from "next/link";
 import React from "react";
 import AddComment from "./post/AddComment";
 import SmallUser, { SmallUserProps } from "./User/SmallUser";
@@ -16,23 +17,36 @@ interface NewsFeedPostProps {
 
 const NewsFeedPost: React.FC<NewsFeedPostProps> = (props: NewsFeedPostProps) => {
     const router = useRouter()
-
+    console.log(router.query['userId']);
     const setPostId = () => {
         if (!router.query['postId']) {
-            router.push({
-                pathname: router.pathname,
-                query: {
-                    postId: props.id
-                }
-            })
+            if (router.query['userId']) {
+                router.push({
+                    pathname: router.pathname,
+                    query: {
+                        postId: props.id,
+                        userId: router.query['userId']
+                    }
+                })
+            } else {
+
+                router.push({
+                    pathname: router.pathname,
+                    query: {
+                        postId: props.id,
+                    }
+                })
+            }
         }
     }
     return (
         <>
-            <div className="w-full  border  p-3 " >
+            <div className="w-full  border  p-3  my-6" >
                 <SmallUser {...props.author} />
                 <hr className="my-3 opacity-0" />
-                <p className="text-xl cursor-pointer" onClick={setPostId}  >{props.content}</p>
+                {/* <Link href={{ pathname : router.pathname , query : { postId : props.id}}} > */}
+                <p className="text-xl cursor-pointer" onClick={setPostId} >{props.content}</p>
+                {/* </Link> */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
                 {props.picture && (<img src={props.picture} alt={props.content} className='object-cover w-full' />)}
                 <hr className="my-3 opacity-0" />

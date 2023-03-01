@@ -7,11 +7,6 @@
         },
         {
             "id" : 1 ,
-            "name" : "people",
-            "icon" : "/icons/people.svg"
-        },
-        {
-            "id" : 1 ,
             "name" : "chat",
             "icon" : "/icons/chat.svg"
         },

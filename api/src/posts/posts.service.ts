@@ -45,7 +45,6 @@ export class PostsService {
       });
       return { success: true, data: post };
     } catch (err: any) {
-      console.log(err);
       throw new InternalServerErrorException(err.message);
     }
   }
@@ -214,7 +213,6 @@ export class PostsService {
       });
       return { success: true, data: updatedPost };
     } catch (err) {
-      console.log(err);
       throw new InternalServerErrorException(err.message);
     }
   }

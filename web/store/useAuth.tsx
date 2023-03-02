@@ -79,7 +79,6 @@ export const AuthProvider = ({ children }: Props) => {
         //         router.push("/feed")
         // }
         // setLoading(false);
-        // console.log("pathname", router.pathname);
     }, [router.pathname]);
 
     /*
@@ -96,11 +95,9 @@ export const AuthProvider = ({ children }: Props) => {
                 password,
                 confirmPassword
             })
-            console.log(res.status);
 
             const data = res.data;
 
-            console.log(data);
             if (data.error)
                 return { success:  false, error: data.message }
             else {
@@ -143,7 +140,6 @@ export const AuthProvider = ({ children }: Props) => {
             }
         }).catch(err => {
             setError(err.message);
-            console.log(err);
         });
     };
     // logout function

@@ -40,7 +40,6 @@ export class UtilsService {
       );
       return result.secure_url;
     } catch (err) {
-      console.log(err);
       throw new InternalServerErrorException(err);
     }
   }

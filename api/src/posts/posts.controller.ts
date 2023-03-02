@@ -58,7 +58,6 @@ export class PostsController {
     @Query() updatePostDto: { postId: string },
   ) {
     const { postId } = updatePostDto;
-    console.log(postId);
     return this.postsService.updatePostPicture(req.user, file, postId);
   }
 

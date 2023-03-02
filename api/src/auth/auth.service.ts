@@ -74,6 +74,7 @@ export class AuthService {
         data: { refreshToken: tokens.refreshToken },
       });
       return {
+        status : 200 ,
         tokens: {
           accessToken: tokens.accessToken,
           refreshToken: tokens.refreshToken,
@@ -81,14 +82,13 @@ export class AuthService {
         user: user,
       };
     } catch (err: any) {
+      console.log(err);
       if (err instanceof PrismaClientKnownRequestError) console.log(err);
       if (transactionProxy.transacted) {
         await this.prisma.user.delete({
           where: { id: transactionProxy.userId },
         });
       }
-      console.log(err);
-      console.log(process.env.JWT_SECRET);
       throw new NotAcceptableException(err.message);
     }
   }
@@ -158,8 +158,6 @@ export class AuthService {
   }
 
   private async hash(password: string): Promise<string> {
-    console.log(password);
-
     const hashed = await hash(password, 10);
     return hashed;
   }

@@ -24,7 +24,6 @@ export class ProfileService {
     userProfileDto: UserProfileDto,
     file: Express.Multer.File,
   ) {
-    console.log(userProfileDto);
     try {
       const theuser: User = await this.prisma.user.findUnique({
         where: { id: user['id'] },
@@ -220,7 +219,6 @@ export class ProfileService {
       }
 
     } catch (error) {
-      console.log(error)
       throw new InternalServerErrorException(error.message);
     }
   }

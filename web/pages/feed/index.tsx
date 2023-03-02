@@ -4,9 +4,6 @@ import NewsFeedPost from "../../components/NewsFeedPost";
 import SmallUser from "../../components/User/SmallUser";
 import Loader from "../../components/Loader";
 const Feed = () => {
-    React.useEffect(() => {
-       console.log("Hello world");
-    }, [])
     return (
         <div className="p-6  w-full flex ">
             <div className="w-2/3 px-20 border-r">

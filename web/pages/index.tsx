@@ -4,6 +4,9 @@ import TextInput from "../components/TextInput";
 import { useRouter } from "next/router";
 import { useAuth } from "../store/useAuth";
 import ErrorMessage from "../components/Error";
+import { fetcher } from "../utils/api";
+import { getCookie, setCookie } from "../utils/cookie";
+import Loader from "../components/Loader";
 
 const Home: NextPage = () => {
     const router = useRouter()
@@ -12,12 +15,30 @@ const Home: NextPage = () => {
     const [signupPassword, setSignupPassword] = React.useState<string>("")
     const [confirmPassword, setConfirmPassword] = React.useState<string>()
     const [auth, setAuth] = useState<"signup" | "login">("signup")
-    const { signUp, loading, error } = useAuth();
+    const [error, setError] = useState<string | null>(null)
+    const [isloading, setIsLoading] = useState<boolean>(false)
+    const { signUp, loading } = useAuth();
     const handleSubmit = async (e: any) => {
+        setIsLoading(true)
         e.preventDefault()
-        const { message, success } = await signUp(username, email, signupPassword, confirmPassword);
-        if (success)
+        const data = await fetcher('auth/signup', {
+            method: "POST",
+            body: {
+                username, email, password: signupPassword, confirmPassword
+            },
+            useToken: false
+        })
+        console.log(data);
+        if (data.status == 200) {
+            setCookie("accessToken", data.tokens.accessToken)
+            setCookie("refreshToken", data.tokens.refreshToken)
+            localStorage.setItem("user", JSON.stringify(data.user))
+            console.log(getCookie("refreshToken"))
             router.push('/feed')
+        } else {
+            setError(data.message)
+        }
+        setIsLoading(false)
     }
     useEffect(() => {
         router.push({
@@ -47,7 +68,7 @@ const Home: NextPage = () => {
                             <TextInput key="password" placeholder="Password" withLabel label="Password" type="password" setStateHook={setSignupPassword} />
                             <TextInput key="confirmPassword" placeholder="Retype the password" withLabel label="Confirm password" type="password" setStateHook={setConfirmPassword} />
                             <span>Already have an account? <button onClick={handleToggleauth} className="text-darkblue underline">login</button></span>
-                            <button className="bg-darkblue   text-white py-3 w-full mt-10  hover:shadow-xl" onClick={handleSubmit}>{loading ? "Loading..." : "Sign up"}</button>
+                            <button className="bg-darkblue   text-white py-3 w-full mt-10  hover:shadow-xl" onClick={handleSubmit}>{isloading ? <Loader /> : "Sign up"}</button>
                         </form>
                     </div>
                 </div>

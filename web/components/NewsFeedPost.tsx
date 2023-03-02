@@ -17,7 +17,6 @@ interface NewsFeedPostProps {
 
 const NewsFeedPost: React.FC<NewsFeedPostProps> = (props: NewsFeedPostProps) => {
     const router = useRouter()
-    console.log(router.query['userId']);
     const setPostId = () => {
         if (!router.query['postId']) {
             if (router.query['userId']) {

@@ -11,13 +11,12 @@ export class AuthController {
   }
   @Post('signup')
   signup(@Body() signupDto: SignupDto) {
-    const { password, confirmPassword }: SignupDto = signupDto;
     console.log(signupDto);
+    const { password, confirmPassword }: SignupDto = signupDto;
     if (password !== confirmPassword)
       throw new NotAcceptableException('Passwords do not match');
     return this.authService.signup(signupDto);
   }
-
   @Post('login.json')
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);

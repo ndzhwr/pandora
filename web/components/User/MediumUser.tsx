@@ -8,7 +8,6 @@ interface MediumPersonProps {
     id: string
 }
 const MediumPersonShower: FC<MediumPersonProps> = (data: MediumPersonProps) => {
-    console.log(data)
     return (
         <div className='px-6 h-auto  bg-white py-4 hover:shadow-sm  border border-semi w-36'>
             <div className="img w-fit h-fit mx-auto">

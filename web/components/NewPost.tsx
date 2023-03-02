@@ -12,7 +12,6 @@ const NewPost: React.FC = () => {
                 content: postData.content
             }
             );
-            console.log(res.data);
         }());
     }
     return (

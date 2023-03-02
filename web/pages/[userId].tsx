@@ -1,12 +1,10 @@
-import React from "react";
+import React, { useState } from "react";
 import { useRouter } from "next/router";
 import NewsFeedPost from "../components/NewsFeedPost";
 import SmallUser from "../components/User/SmallUser";
 const Feed = () => {
+    const[activeSideSection,setActiveSideSection] = useState<"following" | "followers">("followers")
     const router = useRouter();
-    React.useEffect(() => {
-        console.log(router.query);
-    }, [])
     return (
         <div className="   w-full flex ">
             <div className="w-2/3 border-r">
@@ -38,8 +36,8 @@ const Feed = () => {
             </div>
             <div className="w-1/3 mt-10 mx-4">
             <div className="w-full  ">
-                <button className="w-1/2 py-2 border-b-2 border-blue-600 text-blue-600">Followers</button>
-                <button className="w-1/2 py-4">Following</button>
+                <button className={`w-1/2 py-2 ${ activeSideSection == "followers" && "border-b-2 border-blue-600 text-blue-600"}`} onClick={() => setActiveSideSection("followers")}>Followers</button>
+                <button className={`w-1/2 py-2 ${ activeSideSection == "following" && "border-b-2 border-blue-600 text-blue-600"}`} onClick={() => setActiveSideSection("following")}> Following</button>
 
             </div>
                 <div className="flex flex-col gap-4 mt-4 px-6">

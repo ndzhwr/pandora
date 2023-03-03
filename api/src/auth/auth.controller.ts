@@ -11,7 +11,6 @@ export class AuthController {
   }
   @Post('signup')
   signup(@Body() signupDto: SignupDto) {
-    console.log(signupDto);
     const { password, confirmPassword }: SignupDto = signupDto;
     if (password !== confirmPassword)
       throw new NotAcceptableException('Passwords do not match');
@@ -39,5 +38,10 @@ export class AuthController {
     const userId = req.user['id'];
     return this.authService.logout(userId)
 
+  }
+
+  @Put('refreshToken')
+  refreshToken(@Body() body : { refreshToken : string}){
+    return this.authService.refreshToken(body.refreshToken)
   }
 }

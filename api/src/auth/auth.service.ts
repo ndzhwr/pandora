@@ -4,19 +4,25 @@ import {
   NotAcceptableException,
   NotFoundException,
 } from '@nestjs/common';
-import { AuthTokens, LoginDto, SignupDto } from '../types';
+import { AuthTokens, JwtPayload, LoginDto, SignupDto } from '../types';
 import { hash, compare } from 'bcrypt';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { JwtService } from '@nestjs/jwt';
 import { UtilsService } from 'src/utils/utils.service';
 import { PrismaClientKnownRequestError } from '@prisma/client/runtime';
+import { config } from 'dotenv';
+config();
+
 
 @Injectable()
 export class AuthService {
   private prisma: PrismaService;
   private utils: UtilsService;
+  private jwtService: JwtService
   constructor() {
     this.prisma = new PrismaService();
     this.utils = new UtilsService();
+    this.jwtService = new JwtService();
   }
   async signup(signupDto: SignupDto): Promise<any> {
     const transactionMeter: { transacted: boolean; userId: string | null } = {
@@ -74,7 +80,7 @@ export class AuthService {
         data: { refreshToken: tokens.refreshToken },
       });
       return {
-        status : 200 ,
+        status: 200,
         tokens: {
           accessToken: tokens.accessToken,
           refreshToken: tokens.refreshToken,
@@ -136,24 +142,59 @@ export class AuthService {
   }
 
 
-  async logout(userId : string){
+  async logout(userId: string) {
     try {
       const user = await this.prisma.user.update({
-        where : {
-          id :  userId
+        where: {
+          id: userId
         },
-        data : {
-          refreshToken : ""
+        data: {
+          refreshToken: ""
         }
       })
 
-      if(!user) throw new NotFoundException('User not found')
+      if (!user) throw new NotFoundException('User not found')
       return {
-        success: true ,
-        message : 'User logout successful'
+        success: true,
+        message: 'User logout successful'
       }
     } catch (error) {
       throw new InternalServerErrorException(error.message)
+    }
+  }
+
+  async refreshToken(refreshToken: string) {
+    try {
+      const data = this.jwtService.verify<JwtPayload>(refreshToken, {
+        secret: process.env.JWT_REFRESH_SECRET,
+      });
+      if (!data) throw new NotAcceptableException("Invalid credentials")
+      const user = await this.prisma.user.findUnique({
+        where: {
+          id: data.id
+        }
+      })
+      if (!user) throw new NotFoundException("User doesn't exist")
+      const tokens = this.utils.generateTokens({
+        id: user.id,
+        username: user.username
+      })
+      await this.prisma.user.update({
+        where: {
+          id: user.id
+        },
+        data: {
+          refreshToken: tokens.refreshToken
+        }
+      })
+      return {
+        status: 200,
+        message: "token refreshed successfully",
+        tokens
+      }
+    } catch (err: any) {
+      console.log(err);
+      throw new NotAcceptableException("Internal server error")
     }
   }
 
@@ -162,3 +203,5 @@ export class AuthService {
     return hashed;
   }
 }
+
+

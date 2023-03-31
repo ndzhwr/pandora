@@ -5,7 +5,7 @@ import {
   NotFoundException,
 } from '@nestjs/common';
 import { AuthTokens, JwtPayload, LoginDto, SignupDto } from '../types';
-import { hash, compare } from 'bcrypt';
+import { hash, compare } from 'bcryptjs';
 import { PrismaService } from 'src/prisma/prisma.service';
 import { JwtService } from '@nestjs/jwt';
 import { UtilsService } from 'src/utils/utils.service';

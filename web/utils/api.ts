@@ -27,6 +27,7 @@ interface FetcherOptions {
 export const fetcher = async (url: string, options: FetcherOptions) => {
     let response: any;
     console.log(options);
+    console.log(getCookie("accessToken"))
     try {
 
         let res = await fetch(`http://localhost:5000/${url}`, {
@@ -65,4 +66,22 @@ export const fetcher = async (url: string, options: FetcherOptions) => {
         return "Something went wrong"
     }
 
+}
+
+
+
+export const followUserHelper = (userId: string) => {
+    try {
+        (async function () {
+            let res = await fetcher("profile/followUser", {
+                body: { userId },
+                method: "PUT",
+                useToken: true,
+                c_type: "application/json"
+            })
+            console.log(res);
+        }());
+    } catch (error) {
+        console.log(error)
+    }
 }

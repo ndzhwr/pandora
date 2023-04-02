@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import NewsFeedPost from "../components/NewsFeedPost";
 import SmallUser from "../components/User/SmallUser";
 const Feed = () => {
-    const[activeSideSection,setActiveSideSection] = useState<"following" | "followers">("followers")
+    const [activeSideSection, setActiveSideSection] = useState<"following" | "followers">("followers")
     const router = useRouter();
     return (
         <div className="   w-full flex ">
@@ -13,8 +13,7 @@ const Feed = () => {
                     style={{
                         backgroundImage: `url()`
                     }}></div>
-                <div className="-mt-16 px-20">
-
+                <div className="-mt-16 px-6">
                     <img src="/images/image.jpg" alt="" className="w-32 h-32 rounded-full  object-cover border-4 border-white" />
                     <div className="flex items-center justify-between">
                         <div className="w-fit">
@@ -30,16 +29,16 @@ const Feed = () => {
                         <h1 className="text-xl my-2">Activity</h1>
                         <hr />
                         <NewsFeedPost content="The qick brown fox jumps over the lazy dog when money was making man mad" author={{ id: "1101", username: "username", profile: "/images/image.jpg", status: "Rwanda the heart of africa" }} likes={[]} comments={[]} id="sdfsdf232fdg" />
-                    <NewsFeedPost picture="/images/image.jpg" content="The qick brown fox jumps over the lazy dog when money was making man mad" author={{ id: "1101", username: "username", profile: "/images/image.jpg", status: "Rwanda the heart of africa" }} likes={[]} comments={[]} id="sdfsdf232fdg" />
+                        <NewsFeedPost picture="/images/image.jpg" content="The qick brown fox jumps over the lazy dog when money was making man mad" author={{ id: "1101", username: "username", profile: "/images/image.jpg", status: "Rwanda the heart of africa" }} likes={[]} comments={[]} id="sdfsdf232fdg" />
                     </div>
                 </div>
             </div>
             <div className="w-1/3 mt-10 mx-4">
-            <div className="w-full  ">
-                <button className={`w-1/2 py-2 ${ activeSideSection == "followers" && "border-b-2 border-blue-600 text-blue-600"}`} onClick={() => setActiveSideSection("followers")}>Followers</button>
-                <button className={`w-1/2 py-2 ${ activeSideSection == "following" && "border-b-2 border-blue-600 text-blue-600"}`} onClick={() => setActiveSideSection("following")}> Following</button>
+                <div className="w-full  ">
+                    <button className={`w-1/2 py-2 ${activeSideSection == "followers" && "border-b-2 border-blue-600 text-blue-600"}`} onClick={() => setActiveSideSection("followers")}>Followers</button>
+                    <button className={`w-1/2 py-2 ${activeSideSection == "following" && "border-b-2 border-blue-600 text-blue-600"}`} onClick={() => setActiveSideSection("following")}> Following</button>
 
-            </div>
+                </div>
                 <div className="flex flex-col gap-4 mt-4 px-6">
                     <SmallUser id="" username="Nessime" profile="/images/image.jpg" status="Rwanda the heart of Africa" />
                     <SmallUser id="" username="Nessime" profile="/images/image.jpg" status="Rwanda the heart of Africa" />

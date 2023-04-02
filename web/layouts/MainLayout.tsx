@@ -19,17 +19,14 @@ const MainLayout: React.FC<MainLayoutProps> = (props: MainLayoutProps) => {
 
 
     const handleClosePortal = () => {
-        // router.push({
-        //     pathname : router.pathname ,
-        // })
         history.back()
     }
 
     return (
         <>
-            <div className={`flex h-full min-h-screen min-w-screen relative`}>
-                <div className={`py-6 px-10  max-h-screen sticky top-0 ${router.pathname == "/" && "hidden"} border-r `}>
-                    <div className="p-6 border-right  flex flex-col justify-between h-full">
+            <div className={`flex h-full min-h-screen min-w-screen relative text-sm`}>
+                <div className={`py-6 max-h-screen sticky top-0 ${router.pathname == "/" && "hidden"} border-r `}>
+                    <div className="p-6   flex flex-col justify-between h-full">
                         <div>
                             <h4 className="text-2xl ">Pandora</h4>
                             {
@@ -44,7 +41,6 @@ const MainLayout: React.FC<MainLayoutProps> = (props: MainLayoutProps) => {
                         <button className="bg-slate-50  py-4 ">Logout</button>
                     </div>
                 </div>
-
                 {props.children}
             </div>
             {postId && <div className="fixed  w-screen h-screen  bg-[#fff] backdrop-blur-md z-30 top-0 bg-opacity-90 bottom-0 flex px-32">
@@ -68,7 +64,7 @@ const MainLayout: React.FC<MainLayoutProps> = (props: MainLayoutProps) => {
                 )}
                 {!postData &&
                     <div className="w-full h-fulll flex items-center justify-between">
-                        <Loader/>
+                        <Loader />
                     </div>
 
                 }

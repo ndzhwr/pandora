@@ -40,14 +40,14 @@ const NewsFeedPost: React.FC<NewsFeedPostProps> = (props: NewsFeedPostProps) => 
     }
     return (
         <>
-            <div className="w-full  border  p-3  my-6" >
+            <div className="w-full  p-3 border    my-6 rounded-xl shadow-slate-100 shadow-xl" >
                 <SmallUser {...props.author} />
                 <hr className="my-3 opacity-0" />
                 {/* <Link href={{ pathname : router.pathname , query : { postId : props.id}}} > */}
                 <p className="text-xl cursor-pointer" onClick={setPostId} >{props.content}</p>
                 {/* </Link> */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                {props.picture && (<img src={props.picture} alt={props.content} className='object-cover w-full' />)}
+                {props.picture && (<img src={props.picture} alt={props.content} className='object-cover w-full rounded-xl mt-2' />)}
                 <hr className="my-3 opacity-0" />
                 <div className="flex gap-6 justify-start my-2">
                     <button className="flex justify-start items-center"><img src="/icons/like.svg" alt="" className="w-6 h-4 " /><span>Like {props.likes.length}</span></button>

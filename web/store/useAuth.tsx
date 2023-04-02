@@ -64,7 +64,7 @@ export const AuthProvider = ({ children }: Props) => {
     // states
     const [user, setUser] = React.useState<any | null>(null);
     const [error, setError] = React.useState<string | null>(null);
-    const [loading, setLoading] = React.useState<boolean>(true);
+    const [loading, setLoading] = React.useState<boolean>(false);
     const [tokens, setTokens] = React.useState<any>({ accessToken: "", refreshToken: "" })
 
     // use effect which will run for each time a user accesses our application.

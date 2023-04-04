@@ -34,6 +34,8 @@ export const fetcher = async (url: string, options: FetcherOptions) => {
             method: options.method || "GET",
             body: JSON.stringify(options.body),
             headers: {
+                "Access-Control-Allow-Origin" : "http://localhost:3000",
+                "Access-Control-Request-Method": "POST",
                 "Content-Type": options.c_type ? options.c_type : "application/json",
                 "authorization": options.useToken ? `Bearer ${getCookie("accessToken")}` : null,
                 ...options.headers
@@ -80,6 +82,23 @@ export const followUserHelper = (userId: string) => {
                 c_type: "application/json"
             })
             console.log(res);
+        }());
+    } catch (error) {
+        console.log(error)
+    }
+}
+
+export const logoutHandler = () => {
+    try {
+        (async function () {
+            let res : { success: boolean , message : string} = await fetcher("auth/logout", {
+                method: "PUT",
+                useToken: true,
+            })
+            if(res.success){
+                deleteCookies();
+                window.location.href = "/"
+            }
         }());
     } catch (error) {
         console.log(error)

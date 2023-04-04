@@ -9,7 +9,6 @@ import { config } from 'dotenv';
 import { ProfileModule } from './profile/profile.module';
 import { AuthMiddleware } from './middlewares/auth.middleware';
 import { PostsModule } from './posts/posts.module';
-import { LoggerMiddleware } from './middlewares';
 config();
 
 @Module({
@@ -19,7 +18,7 @@ config();
     UtilsModule,
     JwtModule.register({
       secret: process.env.JWT_ACCESS_SECRET,
-      signOptions: { expiresIn: '15m' },
+      signOptions: { expiresIn: "1h" },
     }),
     ProfileModule,
     PostsModule,
@@ -31,6 +30,6 @@ export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {
     consumer
       .apply(AuthMiddleware)
-      .forRoutes('/posts', '/profile', '/auth/deleteUser');
+      .forRoutes('/posts', '/profile', '/auth/deleteUser', '/auth/logout');
   }
 }

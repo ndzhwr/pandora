@@ -16,7 +16,7 @@ export class AuthController {
       throw new NotAcceptableException('Passwords do not match');
     return this.authService.signup(signupDto);
   }
-  @Post('login.json')
+  @Post('login')
   login(@Body() loginDto: LoginDto) {
     return this.authService.login(loginDto);
   }
@@ -35,6 +35,7 @@ export class AuthController {
     success: boolean;
     message: string;
   }> {
+    console.log(req.user)
     const userId = req.user['id'];
     return this.authService.logout(userId)
 

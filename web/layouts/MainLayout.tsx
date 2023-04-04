@@ -5,6 +5,7 @@ import data from '../assets/data/data.json'
 import SmallUser from "../components/User/SmallUser";
 import AddComment from "../components/post/AddComment";
 import Loader from "../components/Loader";
+import { logoutHandler } from "../utils/api";
 interface MainLayoutProps {
     children: React.ReactNode
 }
@@ -38,7 +39,7 @@ const MainLayout: React.FC<MainLayoutProps> = (props: MainLayoutProps) => {
 
                             }
                         </div>
-                        <button className="bg-slate-50  py-4 ">Logout</button>
+                        <button className="bg-slate-50  py-4 " onClick={logoutHandler}>Logout</button>
                     </div>
                 </div>
                 {props.children}

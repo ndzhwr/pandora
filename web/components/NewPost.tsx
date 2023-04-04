@@ -1,6 +1,6 @@
 import React from "react";
 import { fetcher } from '../utils/api'
-import { getCookie } from "../utils/cookie";
+
 
 const NewPost: React.FC = () => {
 

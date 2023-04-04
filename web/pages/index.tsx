@@ -10,14 +10,24 @@ import Loader from "../components/Loader";
 
 const Home: NextPage = () => {
     const router = useRouter()
+    // signup data
     const [username, setUsername] = React.useState<string>("")
     const [email, setEmail] = React.useState<string>("")
     const [signupPassword, setSignupPassword] = React.useState<string>("")
     const [confirmPassword, setConfirmPassword] = React.useState<string>()
+
+    // login data
+    const [login_email, setLogin_email] = React.useState<string>("")
+    const [login_password, setLogin_password] = React.useState<string>("")
+
+    // ui states
     const [auth, setAuth] = useState<"signup" | "login">("signup")
     const [error, setError] = useState<string | null>(null)
     const [isloading, setIsLoading] = useState<boolean>(false)
-    const { signUp, loading } = useAuth();
+
+
+    // Handlers
+
     const handleSubmit = async (e: any) => {
         setIsLoading(true)
         e.preventDefault()
@@ -25,6 +35,30 @@ const Home: NextPage = () => {
             method: "POST",
             body: {
                 username, email, password: signupPassword, confirmPassword
+            },
+            useToken: false
+        })
+        console.log(data);
+
+        if (data.status == 200) {
+            setCookie("accessToken", data.tokens.accessToken)
+            setCookie("refreshToken", data.tokens.refreshToken)
+            localStorage.setItem("user", JSON.stringify(data.user))
+            console.log(getCookie("refreshToken"))
+            router.push('/feed')
+        } else {
+            setError(data.message)
+        }
+        setIsLoading(false)
+    }
+
+    const handleLogin = async (e: any) => {
+        e.preventDefault()
+        setIsLoading(true)
+        const data = await fetcher('auth/login', {
+            method: "POST",
+            body: {
+                email: login_email, password: login_password
             },
             useToken: false
         })
@@ -39,6 +73,7 @@ const Home: NextPage = () => {
             setError(data.message)
         }
         setIsLoading(false)
+
     }
     useEffect(() => {
         router.push({
@@ -77,10 +112,10 @@ const Home: NextPage = () => {
                     <div className="md:w-1/2 md:px-36  mx-auto  h-full msm:w-full msm:px-4  py-6  flex justify-start items-center  bg-blend-multiply">
                         <form className="md:w-full rounded-xl  mx-auto bg-white md:p-10  msm:p-4 py-6">
                             <h1 className="font-bold text-4xl w-fit text-darkblue  py-4">Sign in</h1>
-                            <TextInput key="email" placeholder="Your email address" withLabel label="Email address" setStateHook={setEmail} />
-                            <TextInput key="password" placeholder="Password" withLabel label="Password" type="password" setStateHook={setSignupPassword} />
+                            <TextInput key="email" placeholder="Your email address" withLabel label="Email address" setStateHook={setLogin_email} />
+                            <TextInput key="password" placeholder="Password" withLabel label="Password" type="password" setStateHook={setLogin_password} />
                             <span>Don&apos;t have an account? <button onClick={handleToggleauth} className="text-blue-600 hover:underline">signup</button></span>
-                            <button className="bg-darkblue rounded-full text-white py-3 w-full mt-10  hover:shadow-xl" onClick={handleSubmit}>{loading ? "Loading..." : "Sign in"}</button>
+                            <button className="bg-darkblue rounded-full text-white py-3 w-full mt-10  hover:shadow-xl" onClick={handleSubmit}>{isloading ? "Loading..." : "Sign in"}</button>
                         </form>
                     </div>
                 </div>

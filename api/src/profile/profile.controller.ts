@@ -22,24 +22,24 @@ export class ProfileController {
   }
   @Post('create')
   @UsePipes(ParseGenderPipe)
-  @UseInterceptors(FileInterceptor('profilePicture'))
+  // @UseInterceptors(FileInterceptor('profilePicture'))
   createProfile(
     @Req() req: Request,
     @Body() userProfileDto: UserProfileDto,
-    @UploadedFile() file: Express.Multer.File,
+    // @UploadedFile() file: Express.Multer.File,
   ) {
     const user = req?.user;
-    return this.profileService.createProfile(user, userProfileDto, file);
+    return this.profileService.createProfile(user, userProfileDto,userProfileDto.file);
   }
 
   @Put('updateProfilePicture')
   @UseInterceptors(FileInterceptor('profilePicture'))
   updateProfilePicture(
     @Req() req: Request,
-    @UploadedFile() file: Express.Multer.File,
+    @Body() body :  { file :  string}
   ) {
     const user = req?.user;
-    return this.profileService.updateProfilePicture(user, file);
+    return this.profileService.updateProfilePicture(user, body.file);
   }
 
   @Delete('deleteProfile')

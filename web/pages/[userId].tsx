@@ -24,7 +24,10 @@ const Feed = () => {
                             <p className="font-bold text-2xl">{"@" + router.query['userId']} </p>
                             <p className="text-slate-600">Rwanda the heart of Africa</p>
                         </div>
+                        <div className="flex gap-2 items-center">
+                        <button className="py-4 px-6  border-2 border-black rounded-full text-black ">Edit</button>
                         <button className="py-4 px-6  bg-blue-500 rounded-full text-white ">Follow</button>
+                        </div>
                     </div>
                     <p className="py-2">Just a someone</p>
                     <p className="text-sm">Followed  by <span className="font-bold">@mozart</span></p>

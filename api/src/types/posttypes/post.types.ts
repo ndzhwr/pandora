@@ -6,6 +6,11 @@ export class CreatePostDto {
   @IsNotEmpty()
   @MaxLength(200)
   public content: string
+
+  @IsString()
+  @IsNotEmpty()
+  @MaxLength(200)
+  public postPicture: string
 }
 
 

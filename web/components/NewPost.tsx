@@ -9,16 +9,12 @@ const NewPost: React.FC = () => {
     const [file, setFile] = React.useState<any>(null)
 
     const handleSendPost = () => {
-        const formdata = new FormData();
-        formdata.append("content", postData.content);
-        formdata.append("postPicture", file);
-
         (async function () {
             let res = await fetcher("posts/create", {
-                body: formdata,
+                body: { content : postData.content , postPicture: base64},
                 method: 'POST',
                 useToken: true,
-                c_type : 'multipart/form-data'
+                c_type : 'application/json'
             })                                 
             console.log(res);   
         }());  

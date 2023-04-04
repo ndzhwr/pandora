@@ -22,7 +22,7 @@ export class ProfileService {
   async createProfile(
     user: Express.User,
     userProfileDto: UserProfileDto,
-    file: Express.Multer.File,
+    file: string,
   ) {
     try {
       const theuser: User = await this.prisma.user.findUnique({
@@ -63,7 +63,7 @@ export class ProfileService {
     }
   }
 
-  async updateProfilePicture(user: Express.User, file: Express.Multer.File) {
+  async updateProfilePicture(user: Express.User, file:string) {
     try {
       const newpicture = await this.utils.uploadFile(file);
       const theuser: User = await this.prisma.user.findUnique({

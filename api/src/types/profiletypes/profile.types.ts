@@ -4,6 +4,7 @@ export class UserProfileDto {
   profiePicture?: string
   gender?: GENDER
   status? :  string
+  file? : string
   
 }
 

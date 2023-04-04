@@ -1,4 +1,4 @@
-import { Injectable, InternalServerErrorException } from '@nestjs/common';
+import { Injectable, InternalServerErrorException, Logger } from '@nestjs/common';
 import { AuthTokens } from '../types';
 import { JwtService } from '@nestjs/jwt';
 import { JwtPayload } from '../types';
@@ -27,19 +27,20 @@ export class UtilsService {
     };
   }
 
-  async uploadFile(file: Express.Multer.File): Promise<string> {
+  async uploadFile(file: string): Promise<string> {
     try {
-      const base64 = file.buffer.toString('base64');
+     
       v2.config({
         cloud_name: env.CLOUDINARY_CLOUD_NAME,
         api_key: env.CLOUDINARY_API_KEY,
         api_secret: env.CLOUDINARY_API_SECRET,
       });
       const result = await v2.uploader.upload(
-        'data:image/png;base64,' + base64,
+        file
       );
       return result.secure_url;
     } catch (err) {
+      Logger.log(err, "Cloudinary error")
       throw new InternalServerErrorException(err);
     }
   }

@@ -19,7 +19,6 @@ export class PostsService {
   async createPost(
     user: Express.User,
     createPostDto: CreatePostDto,
-    file: Express.Multer.File,
   ) {
     try {
       const theuser = await this.prisma.user.findUnique({
@@ -28,7 +27,7 @@ export class PostsService {
         },
       });
       if (!theuser) throw new NotFoundException('Such user not found');
-      const image = await this.utils.uploadFile(file);
+      const image = await this.utils.uploadFile(createPostDto.postPicture);
       const post = await this.prisma.post.create({
         data: {
           content: createPostDto.content,
@@ -90,36 +89,36 @@ export class PostsService {
     }
   }
 
-  async updatePostPicture(
-    user: Express.User,
-    file: Express.Multer.File,
-    postId: string,
-  ) {
-    try {
-      const theuser = await this.prisma.user.findUnique({
-        where: {
-          id: user['id'],
-        },
-      });
-      if (!theuser) throw new NotFoundException('Such user not found');
-      const image = await this.utils.uploadFile(file);
-      const post = await this.prisma.post.update({
-        where: {
-          id: postId,
-        },
-        data: {
-          picture: image,
-        },
-        include: {
-          likes: true,
-          author: true,
-        },
-      });
-      return { success: true, data: post };
-    } catch (err: any) {
-      throw new InternalServerErrorException(err.message);
-    }
-  }
+  // async updatePostPicture(
+  //   user: Express.User,
+  //   file: Express.Multer.File,
+  //   postId: string,
+  // ) {
+  //   try {
+  //     const theuser = await this.prisma.user.findUnique({
+  //       where: {
+  //         id: user['id'],
+  //       },
+  //     });
+  //     if (!theuser) throw new NotFoundException('Such user not found');
+  //     const image = await this.utils.uploadFile(file);
+  //     const post = await this.prisma.post.update({
+  //       where: {
+  //         id: postId,
+  //       },
+  //       data: {
+  //         picture: image,
+  //       },
+  //       include: {
+  //         likes: true,
+  //         author: true,
+  //       },
+  //     });
+  //     return { success: true, data: post };
+  //   } catch (err: any) {
+  //     throw new InternalServerErrorException(err.message);
+  //   }
+  // }
 
   async getUserPosts(userId: string) {
     try {

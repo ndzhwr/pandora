@@ -26,15 +26,15 @@ export class PostsController {
   }
 
   @Post('create')
-  @UseInterceptors(FileInterceptor('postPicture'))
+  // @UseInterceptors(FileInterceptor('postPicture'))
   async createPost(
     @Req() req: Request,
     @Body() createPostDto: CreatePostDto,
-    @UploadedFile() file: Express.Multer.File,
+    // @UploadedFile() file: Express.Multer.File,
   ) {
     const user = req?.user;
-    console.log(file)
-    return this.postsService.createPost(user, createPostDto, file);
+
+    return this.postsService.createPost(user, createPostDto);
   }
 
   @Put('updatePost')
@@ -50,17 +50,17 @@ export class PostsController {
     return this.postsService.deletePost(postId);
   }
 
-  @Put('updatePostPicture')
-  @UseInterceptors(FileInterceptor('postPicture'))
-  @UseGuards(PostOwnerGuard)
-  async updatePostPicture(
-    @Req() req: Request,
-    @UploadedFile() file: Express.Multer.File,
-    @Query() updatePostDto: { postId: string },
-  ) {
-    const { postId } = updatePostDto;
-    return this.postsService.updatePostPicture(req.user, file, postId);
-  }
+  // @Put('updatePostPicture')
+  // @UseInterceptors(FileInterceptor('postPicture'))
+  // @UseGuards(PostOwnerGuard)
+  // async updatePostPicture(
+  //   @Req() req: Request,
+  //   @UploadedFile() file: Express.Multer.File,
+  //   @Query() updatePostDto: { postId: string },
+  // ) {
+  //   const { postId } = updatePostDto;
+  //   return this.postsService.updatePostPicture(req.user, file, postId);
+  // }
 
   @Get('getUserPosts')
   getPosts(@Query() query: any) {

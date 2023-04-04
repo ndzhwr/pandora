@@ -25,15 +25,13 @@ interface FetcherOptions {
 
 export const fetcher = async (url: string, options: FetcherOptions) => {
     let response: any;
-    console.log(options);
-    console.log(getCookie("accessToken"))
     try {
 
-        let res = await fetch(`http://192.168.43.229:5000/${url}`, {
+        let res = await fetch(`http://localhost:5000/${url}`, {
             method: options.method || "GET",
             body: JSON.stringify(options.body),
             headers: {
-                "Access-Control-Allow-Origin" : "http://localhost:3000",
+                "Access-Control-Allow-Origin": "http://localhost:3000",
                 "Access-Control-Request-Method": "POST",
                 "Content-Type": options.c_type ? options.c_type : "application/json",
                 "authorization": options.useToken ? `Bearer ${getCookie("accessToken")}` : null,
@@ -43,21 +41,24 @@ export const fetcher = async (url: string, options: FetcherOptions) => {
         response = await res.json()
         console.log(response);
 
-        if (response.message != undefined && response.message.name == "TokenExpiredError") {
-            deleteCookies();
-            let resp = await fetch("http://localhost:5000/auth/refreshToken", {
-                method: "PUT",
-                body: JSON.stringify({ refreshToken: getCookie("refreshToken") }),
-                headers: {
-                    "Content-type": "application/json"
+        if (response.message == "Unauthorized" || (response.message != undefined && response.message.name == "TokenExpiredError")) {
+            if (getCookie("refreshToken") == "") return window.location.href = "/?auth=login"
+            else {
+                let resp = await fetch("http://localhost:5000/auth/refreshToken", {
+                    method: "PUT",
+                    body: JSON.stringify({ refreshToken: getCookie("refreshToken") }),
+                    headers: {
+                        "Content-type": "application/json"
+                    }
+                })
+                resp = await resp.json()
+                console.log("Response", resp);
+                if (resp.status == 200) {
+                    deleteCookies();
+                    setCookie("accessToken", resp["tokens"].accessToken)
+                    setCookie("refreshToken", resp["tokens"].refreshToken)
+                    fetcher(url, options)
                 }
-            })
-            resp = await resp.json()
-            console.log("Response", resp);
-            if (resp.status == 200) {
-                setCookie("accessToken", resp["tokens"].accessToken)
-                setCookie("refreshToken", resp["tokens"].refreshToken)
-                fetcher(url, options)
             }
         } else {
             return response
@@ -90,11 +91,11 @@ export const followUserHelper = (userId: string) => {
 export const logoutHandler = () => {
     try {
         (async function () {
-            let res : { success: boolean , message : string} = await fetcher("auth/logout", {
+            let res: { success: boolean, message: string } = await fetcher("auth/logout", {
                 method: "PUT",
                 useToken: true,
             })
-            if(res.success){
+            if (res.success) {
                 deleteCookies();
                 window.location.href = "/"
             }

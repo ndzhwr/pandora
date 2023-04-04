@@ -24,7 +24,7 @@ const SmallUser: React.FC<SmallUserProps> = (props: SmallUserProps) => {
                     " title={props.status} >{status}</p>
                 </div>
             </div>
-          { props.with_follow && <button className="py-2 px-4  text-white rounded-full bg-black" onClick={() => followUserHelper(props.id)}>Follow</button> }  
+          { true && <button className="py-2 px-4  text-white rounded-full bg-black" onClick={() => followUserHelper(props.id)}>Follow</button> }  
         </div>
     )
 }

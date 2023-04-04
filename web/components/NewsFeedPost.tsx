@@ -40,8 +40,8 @@ const NewsFeedPost: React.FC<NewsFeedPostProps> = (props: NewsFeedPostProps) => 
     }
     return (
         <>
-            <div className="w-full  p-3 border    my-6 rounded-xl shadow-slate-100 shadow-xl" >
-                <SmallUser {...props.author} />
+            <div className="w-full  p-3 border    md:my-3 msm:my-1 rounded-xl shadow-slate-100 shadow-xl" >
+                <SmallUser {...props.author} with_follow={true} />
                 <hr className="my-3 opacity-0" />
                 {/* <Link href={{ pathname : router.pathname , query : { postId : props.id}}} > */}
                 <p className="text-xl cursor-pointer" onClick={setPostId} >{props.content}</p>

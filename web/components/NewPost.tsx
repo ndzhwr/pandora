@@ -46,7 +46,7 @@ const NewPost: React.FC = () => {
                 <div className="addons my-2 flex justify-between gap-2">
                     {!base64 && <button className="flex gap-1 items-center  px-2 py-1">
                         {/* <div className="main flex bg-slate-900 h-fit  border-2  justify-center w-full "> */}
-                        <img src="/icons/image.svg" alt="" className="w-6 h-6  fill-darklue opacity-80" />
+                        <img src="/icons/image.svg" alt="" className="w-6 h-6  fill-darklue opacity-80 z-10" />
                         <label className="  px-4 py-2 rounded-full    text-slate text-sm cursor-pointer  font-bold   ">
                             Add Image
                             <input

@@ -30,7 +30,7 @@ export const fetcher = async (url: string, options: FetcherOptions) => {
     console.log(getCookie("accessToken"))
     try {
 
-        let res = await fetch(`http://localhost:5000/${url}`, {
+        let res = await fetch(`http://192.168.43.229:5000/${url}`, {
             method: options.method || "GET",
             body: JSON.stringify(options.body),
             headers: {

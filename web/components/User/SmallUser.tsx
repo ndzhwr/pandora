@@ -12,7 +12,7 @@ export interface SmallUserProps {
 const SmallUser: React.FC<SmallUserProps> = (props: SmallUserProps) => {
         const router  = useRouter();
 
-        const status = props.status.length > 14 ? props.status.slice(0,14) + "..." : props.status
+        const status = props.status.length > 14 ? props.status.slice(0,20) + "..." : props.status
     return (
         <div className="w-full flex  gap-2 justify-between">
             <div className="flex justify-start items-center gap-2">

@@ -1,5 +1,6 @@
 import axios from 'axios'
 import { deleteCookies, getCookie, setCookie } from './cookie'
+import { Post } from '../@types';
 export const api = () => {
     const token = getCookie("accessToken");
     return axios.create({
@@ -39,8 +40,6 @@ export const fetcher = async (url: string, options: FetcherOptions) => {
             }
         })
         response = await res.json()
-        console.log(response);
-
         if (response.message == "Unauthorized" || (response.message != undefined && response.message.name == "TokenExpiredError")) {
             if (getCookie("refreshToken") == "") return window.location.href = "/?auth=login"
             else {
@@ -61,7 +60,7 @@ export const fetcher = async (url: string, options: FetcherOptions) => {
                 }
             }
         } else {
-            return response
+            return response;
         }
     } catch (error) {
         console.log(error);
@@ -104,3 +103,41 @@ export const logoutHandler = () => {
         console.log(error)
     }
 }
+
+export const getAllPostsHandler = () : Promise<{ success : boolean , data  : Post[] }>  => {
+    return new Promise((resolve, reject) => {
+        try {
+            let data: any;
+            (async function () {
+                let res: { success: boolean, data: Post[] } = await fetcher("posts/getAllPosts", {
+                    method: "GET",
+                    useToken: true,
+                })
+                resolve(res)
+            }());
+        } catch (error) {
+            console.log("Er", error)
+            reject(error)
+        }
+    })
+}
+export const getSinglePostHandler = (postId  : string) : Promise<{ success : boolean , data  : Post }>  => {
+    return new Promise((resolve, reject) => {
+        try {
+            let data: any;
+            (async function () {
+                let res: { success: boolean, data: Post } = await fetcher(`posts/getPostById?postId=${postId}`, {
+                    method: "GET",
+                    useToken: true,
+                })
+                console.log(res)
+                resolve(res)
+            }());
+        } catch (error) {
+            console.log("Er", error)
+            reject(error)
+        }
+    })
+}
+
+export const defaultProfile : string  = "https://thumbs.dreamstime.com/b/default-profile-picture-avatar-photo-placeholder-vector-illustration-default-profile-picture-avatar-photo-placeholder-vector-189495158.jpg"   ;

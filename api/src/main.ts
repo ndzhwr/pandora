@@ -12,11 +12,11 @@ async function bootstrap() {
   app.enableCors({
     origin: ['http://localhost:3000', 'http://pandora-monorepo-web.vercel.app'],
   });
-  app.use(morgan("combined"))
-  app.use((req : Request, res : Response, next : NextFunction) => {
-    Logger.log(req.headers, "Request Headers");
-    next();
-  })
+  app.use(morgan("short"))
+  // app.use((req : Request, res : Response, next : NextFunction) => {
+  //   Logger.log(req.headers, "Request Headers");
+  //   next();
+  // })
   await app.listen(env.PORT);
   app.useLogger(new Logger());
   if (module.hot) {

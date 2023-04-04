@@ -142,7 +142,12 @@ export class PostsService {
       const posts = await this.prisma.post.findMany({
         include: {
           comments: true,
-          author: true,
+          likes : true ,
+          author: {
+            include : {
+              profile : true
+            }
+          } ,
         },
       });
       return { success: true, data: posts };
@@ -175,8 +180,13 @@ export class PostsService {
           id: postId,
         },
         include: {
-          author: true,
+          author: {
+            include:  {
+              profile : true
+            }
+          },
           comments: true,
+          likes:  true
         },
       });
       return { success: true, data: post };

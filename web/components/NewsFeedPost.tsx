@@ -50,8 +50,8 @@ const NewsFeedPost: React.FC<NewsFeedPostProps> = (props: NewsFeedPostProps) => 
                 {props.picture && (<img src={props.picture} alt={props.content} className='object-cover w-full rounded-xl mt-2' />)}
                 <hr className="my-3 opacity-0" />
                 <div className="flex gap-6 justify-start my-2">
-                    <button className="flex justify-start items-center"><img src="/icons/like.svg" alt="" className="w-6 h-4 " /><span>Like {props.likes.length}</span></button>
-                    <button className="flex justify-start items-center"><img src="/icons/comment.svg" alt="" className="w-6 h-4" /><span>Comment {props.comments.length}</span></button>
+                    <button className="flex justify-start items-center"><img src="/icons/like.svg" alt="" className="w-6 h-5 " /><span>Like {props.likes.length}</span></button>
+                    <button className="flex justify-start items-center"><img src="/icons/comment.svg" alt="" className="w-6 h-5" /><span>Comment {props.comments.length}</span></button>
                 </div>
                 <hr className="my-3 opacity-0" />
                 <AddComment author={{ username: "ndhzwr", picture: "/images/image.jpg", id: "1123" }} postid="sgs5" />

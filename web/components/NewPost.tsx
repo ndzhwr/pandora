@@ -42,7 +42,7 @@ const NewPost: React.FC = () => {
     return (
         <div className="bg-white border  p-4 rounded-xl shadow-slate-100 shadow-xl">
             <h2 className="mb-2 font-bold">Add a new post</h2>
-                <textarea name="" id="" onChange={(e) => setPostData({ ...postData, content: e.target.value.trim() })} className="w-full border-none  bg-slate-50 rounded-md px-2  py-2  max-h-32 outline-none " maxLength={280} placeholder="What's on your mind"></textarea>`
+                <textarea name="" id="" onChange={(e) => setPostData({ ...postData, content: e.target.value.trim() })} className="w-full border-none  bg-slate-50 rounded-md p-4  max-h-32 outline-none " maxLength={280} placeholder="What's on your mind"></textarea>`
                 <div className="addons my-2 flex justify-between gap-2">
                     {!base64 && <button className="flex gap-1 items-center  px-2 py-1">
                         {/* <div className="main flex bg-slate-900 h-fit  border-2  justify-center w-full "> */}

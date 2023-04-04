@@ -1,6 +1,5 @@
 import axios from 'axios'
 import { deleteCookies, getCookie, setCookie } from './cookie'
-import { log } from 'console';
 export const api = () => {
     const token = getCookie("accessToken");
     return axios.create({

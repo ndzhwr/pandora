@@ -115,7 +115,7 @@ const Home: NextPage = () => {
                             <TextInput key="email" placeholder="Your email address" withLabel label="Email address" setStateHook={setLogin_email} />
                             <TextInput key="password" placeholder="Password" withLabel label="Password" type="password" setStateHook={setLogin_password} />
                             <span>Don&apos;t have an account? <button onClick={handleToggleauth} className="text-blue-600 hover:underline">signup</button></span>
-                            <button className="bg-darkblue rounded-full text-white py-3 w-full mt-10  hover:shadow-xl" onClick={handleSubmit}>{isloading ? "Loading..." : "Sign in"}</button>
+                            <button className="bg-darkblue rounded-full text-white py-3 w-full mt-10  hover:shadow-xl" onClick={handleLogin}>{isloading ? "Loading..." : "Sign in"}</button>
                         </form>
                     </div>
                 </div>

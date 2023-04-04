@@ -99,7 +99,7 @@ export class AuthService {
     }
   }
 
-  async login(loginDto: LoginDto): Promise<AuthTokens> {
+  async login(loginDto: LoginDto): Promise<{status: number , tokens: AuthTokens}> {
     const { email, password } = loginDto;
     if (!email || !password)
       throw new NotAcceptableException('No required credentials');
@@ -121,7 +121,13 @@ export class AuthService {
       where: { id: user.id },
       data: { refreshToken: tokens.refreshToken },
     });
-    return tokens;
+    return {
+      status: 200,
+      tokens: {
+        accessToken: tokens.accessToken,
+        refreshToken: tokens.refreshToken,
+      }
+    };
   }
 
   async deleleAccount(

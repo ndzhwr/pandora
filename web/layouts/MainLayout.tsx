@@ -39,7 +39,7 @@ const MainLayout: React.FC<MainLayoutProps> = (props: MainLayoutProps) => {
 
                             }
                         </div>
-                        <button className="bg-slate-50  py-4 " onClick={logoutHandler}>Logout</button>
+                        <button className="bg-slate-50 text-sm  py-4 " onClick={logoutHandler}>Logout</button>
                     </div>
                 </div>
                 {props.children}

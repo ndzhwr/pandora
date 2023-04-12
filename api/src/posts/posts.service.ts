@@ -21,13 +21,16 @@ export class PostsService {
     createPostDto: CreatePostDto,
   ) {
     try {
+      let image : string | null = null ;
       const theuser = await this.prisma.user.findUnique({
         where: {
           id: user['id'],
         },
       });
       if (!theuser) throw new NotFoundException('Such user not found');
-      const image = await this.utils.uploadFile(createPostDto.postPicture);
+      if(createPostDto.postPicture) {
+         image = await this.utils.uploadFile(createPostDto.postPicture);
+        }
       const post = await this.prisma.post.create({
         data: {
           content: createPostDto.content,
@@ -44,6 +47,7 @@ export class PostsService {
       });
       return { success: true, data: post };
     } catch (err: any) {
+      console.log(err)
       throw new InternalServerErrorException(err.message);
     }
   }

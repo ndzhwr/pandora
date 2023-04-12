@@ -65,7 +65,7 @@ const NewPost: React.FC = () => {
                     <button className=" px-4 py-2 rounded-full  border bg-blue-600  text-white text-sm" onClick={handleSendPost}>Add post</button>
                 </div>
             {base64 && (
-                <img src={base64} className="object-contain items-center" />
+                <img src={base64} className="object-contain items-center rounded-md" />
             )}
         </div>
     )

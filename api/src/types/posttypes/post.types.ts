@@ -8,9 +8,7 @@ export class CreatePostDto {
   public content: string
 
   @IsString()
-  @IsNotEmpty()
-  @MaxLength(200)
-  public postPicture: string
+  public postPicture?: string | null
 }
 
 

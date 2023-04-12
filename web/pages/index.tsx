@@ -92,8 +92,8 @@ const Home: NextPage = () => {
         <>
             {auth == "signup" ? (
                 <div style={{
-                }} className="bg-cover  bg-no-repeat bg-offwhite  bg-opacity-30  items-center justify-between flex w-full h-screen">
-                    <div className="lg:w-1/2 md:px-36  mx-auto  h-full msm:w-full msm:px-4  py-6  flex justify-start items-center  bg-blend-multiply">
+                }} className="bg-cover  bg-no-repeat bg-white  bg-opacity-30  items-center justify-between flex w-full h-screen">
+                    <div className="lg:w-1/2   mx-auto  h-full msm:w-full shadow-xl msm:px-4  py-6  flex justify-start items-center  bg-blend-multiply">
                         <form className="md:w-full rounded-xl mx-auto bg-white md:p-10  msm:p-4 py-6">
                             {error && <ErrorMessage message={error}></ErrorMessage>}
                             <h1 className="font-bold text-4xl w-fit text-darkblue  py-4">Sign up</h1>
@@ -108,8 +108,8 @@ const Home: NextPage = () => {
                 </div>
             ) : (
                 <div style={{
-                }} className="bg-cover w-full bg-no-repeat bg-offwhite  bg-opacity-30  items-center justify-between flex h-screen">
-                    <div className="md:w-1/2  max-w-[600px]  mx-auto  h-full msm:w-full msm:px-4  py-6  flex justify-start items-center  bg-blend-multiply">
+                }} className="bg-cover w-full bg-no-repeat bg-white  bg-opacity-30  items-center justify-between flex h-screen">
+                    <div className="md:w-1/2  max-w-[600px]  mx-auto  shadow-xl h-full msm:w-full msm:px-4  py-6  flex justify-start items-center  bg-blend-multiply">
                         <form className="md:w-full rounded-xl  mx-auto bg-white md:p-10  msm:p-4 py-6">
                             {error && <ErrorMessage message={error}></ErrorMessage>}
                             <h1 className="font-bold text-4xl w-fit text-darkblue  py-4">Sign in</h1>

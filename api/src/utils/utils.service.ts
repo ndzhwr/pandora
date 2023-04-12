@@ -40,7 +40,7 @@ export class UtilsService {
       );
       return result.secure_url;
     } catch (err) {
-      Logger.log(err, "Cloudinary error")
+      Logger.log(err.message, "Cloudinary error")
       throw new InternalServerErrorException(err);
     }
   }

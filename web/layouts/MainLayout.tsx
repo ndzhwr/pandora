@@ -32,7 +32,7 @@ const MainLayout: React.FC<MainLayoutProps> = (props: MainLayoutProps) => {
 
     return (
         <>
-            <div className={`flex h-full min-h-screen min-w-screen relative text-sm xl:px-[20vw]`}>
+            <div className={`flex h-full min-h-screen min-w-screen relative text-sm xl:px-[20vw]`}>             
                 <div className={`py-3 max-h-screen sticky top-0 ${router.pathname == "/" && "hidden"} border-r `}>
                     <div className=" px-1   flex flex-col justify-between h-full  top-0 bg-slate z-40  md:static   bg-white">
                         <div className="md:block">
@@ -68,6 +68,9 @@ const MainLayout: React.FC<MainLayoutProps> = (props: MainLayoutProps) => {
                         </button>
                     </div>
                 </div>
+                {/* <div className="bg-red-600 absolute top-0 w-fit  text-white px-10 py-4 rounded-md">
+                    Error
+                </div> */}
                 {props.children}
             </div>
             {postId && <div className="fixed  w-screen h-screen rounde-md  md:mb-0 msm:mb-12  msm:p-4 sm:px-[4vw] md:px-[10vw] md:py-20 bg-white backdrop-blur-md z-30 top-0 bg-opacity-90 bottom-0 flex  msm:flex-col md:flex-row ">

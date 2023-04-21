@@ -87,11 +87,9 @@ export class AuthService {
         },
         user: user,
       };
-    } catch (err: any) {
-      console.log(err);
-      if (err instanceof PrismaClientKnownRequestError) console.log(err);
+    } catch (err: any) { 
       if (transactionProxy.transacted) {
-        await this.prisma.user.delete({
+        await this.prisma.user.delete({ 
           where: { id: transactionProxy.userId },
         });
       }
@@ -99,7 +97,7 @@ export class AuthService {
     }
   }
 
-  async login(loginDto: LoginDto): Promise<{status: number , tokens: AuthTokens}> {
+  async login(loginDto: LoginDto): Promise<{ status: number, tokens: AuthTokens }> {
     const { email, password } = loginDto;
     if (!email || !password)
       throw new NotAcceptableException('No required credentials');

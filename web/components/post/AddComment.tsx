@@ -1,4 +1,4 @@
-import React from 'react'
+import React , { FC } from 'react'
 
 interface AddCommentProps {
     author: {
@@ -8,7 +8,9 @@ interface AddCommentProps {
     }
     postid: string;
 }
-const AddComment: React.FC<AddCommentProps> = (props: AddCommentProps) => {
+
+
+const AddComment: FC<AddCommentProps> = (props: AddCommentProps) => {
     const [viewTip,setViewTip] = React.useState<boolean>(false)
     return (
         <>

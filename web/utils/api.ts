@@ -38,7 +38,7 @@ export const fetcher = async (url: string, options: FetcherOptions) => {
                 "authorization": options.useToken ? `Bearer ${getCookie("accessToken")}` : null,
                 ...options.headers
             }
-        })
+        })  
         response = await res.json()
         if (response.message == "Unauthorized" || (response.message != undefined && response.message.name == "TokenExpiredError")) {
             if (getCookie("refreshToken") == "") return window.location.href = "/?auth=login"
@@ -51,7 +51,6 @@ export const fetcher = async (url: string, options: FetcherOptions) => {
                     }
                 })
                 resp = await resp.json()
-                console.log("Response", resp);
                 if (resp.status == 200) {
                     deleteCookies();
                     setCookie("accessToken", resp["tokens"].accessToken)
@@ -63,7 +62,6 @@ export const fetcher = async (url: string, options: FetcherOptions) => {
             return response;
         }
     } catch (error) {
-        console.log(error);
         return "Something went wrong"
     }
 
@@ -80,10 +78,8 @@ export const followUserHelper = (userId: string) => {
                 useToken: true,
                 c_type: "application/json"
             })
-            console.log(res);
         }());
     } catch (error) {
-        console.log(error)
     }
 }
 
@@ -100,23 +96,21 @@ export const logoutHandler = () => {
             }
         }());
     } catch (error) {
-        console.log(error)
     }
 }
 
 export const getAllPostsHandler = () : Promise<{ success : boolean , data  : Post[] }>  => {
     return new Promise((resolve, reject) => {
         try {
-            let data: any;
             (async function () {
                 let res: { success: boolean, data: Post[] } = await fetcher("posts/getAllPosts", {
                     method: "GET",
                     useToken: true,
                 })
+                console.log(res)
                 resolve(res)
             }());
         } catch (error) {
-            console.log("Er", error)
             reject(error)
         }
     })
@@ -130,11 +124,9 @@ export const getSinglePostHandler = (postId  : string) : Promise<{ success : boo
                     method: "GET",
                     useToken: true,
                 })
-                console.log(res)
                 resolve(res)
             }());
         } catch (error) {
-            console.log("Er", error)
             reject(error)
         }
     })

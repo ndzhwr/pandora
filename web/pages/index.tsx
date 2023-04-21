@@ -38,13 +38,11 @@ const Home: NextPage = () => {
             },
             useToken: false
         })
-        console.log(data);
 
         if (data.status == 200) {
             setCookie("accessToken", data.tokens.accessToken)
             setCookie("refreshToken", data.tokens.refreshToken)
             localStorage.setItem("user", JSON.stringify(data.user))
-            console.log(getCookie("refreshToken"))
             router.push('/feed')
         } else {
             setError(data.message)
@@ -62,12 +60,10 @@ const Home: NextPage = () => {
             },
             useToken: false
         })
-        console.log(data);
         if (data.status == 200) {
             setCookie("accessToken", data.tokens.accessToken)
             setCookie("refreshToken", data.tokens.refreshToken)
             localStorage.setItem("user", JSON.stringify(data.user))
-            console.log(getCookie("refreshToken"))
             router.push('/feed')
         } else {
             setError(data.message)
@@ -95,7 +91,6 @@ const Home: NextPage = () => {
                 }} className="bg-cover  bg-no-repeat bg-white  bg-opacity-30  items-center justify-between flex w-full h-screen">
                     <div className="lg:w-1/2   mx-auto  h-full msm:w-full shadow-xl msm:px-4  py-6  flex justify-start items-center  bg-blend-multiply">
                         <form className="md:w-full rounded-xl mx-auto bg-white md:p-10  msm:p-4 py-6">
-                            {error && <ErrorMessage message={error}></ErrorMessage>}
                             <h1 className="font-bold text-4xl w-fit text-darkblue  py-4">Sign up</h1>
                             <TextInput key="username" placeholder="Choose a username" withLabel label="Username" setStateHook={setUsername} />
                             <TextInput key="email" placeholder="Your email address" withLabel label="Email address" setStateHook={setEmail} />
@@ -111,7 +106,6 @@ const Home: NextPage = () => {
                 }} className="bg-cover w-full bg-no-repeat bg-white  bg-opacity-30  items-center justify-between flex h-screen">
                     <div className="md:w-1/2  max-w-[600px]  mx-auto  shadow-xl h-full msm:w-full msm:px-4  py-6  flex justify-start items-center  bg-blend-multiply">
                         <form className="md:w-full rounded-xl  mx-auto bg-white md:p-10  msm:p-4 py-6">
-                            {error && <ErrorMessage message={error}></ErrorMessage>}
                             <h1 className="font-bold text-4xl w-fit text-darkblue  py-4">Sign in</h1>
                             <TextInput key="email" placeholder="Your email address" withLabel label="Email address" setStateHook={setLogin_email} />
                             <TextInput key="password" placeholder="Password" withLabel label="Password" type="password" setStateHook={setLogin_password} />

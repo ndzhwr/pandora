@@ -15,7 +15,7 @@ interface NewsFeedPostProps {
 }
 
 
-const NewsFeedPost: React.FC<NewsFeedPostProps> = (props: NewsFeedPostProps) => {
+const NFPost: React.FC<NewsFeedPostProps> = (props: NewsFeedPostProps) => {
     const router = useRouter()
     const setPostId = () => {
         if (!router.query['postId']) {
@@ -40,7 +40,7 @@ const NewsFeedPost: React.FC<NewsFeedPostProps> = (props: NewsFeedPostProps) => 
     }
     return (
         <>
-            <div className="w-full  p-3 border    md:my-3 msm:my-1 rounded-xl shadow-slate-100 shadow-xl" >
+            <div className="w-full  p-3 border    md:my-3 msm:my-1 rounded-xl shadow-slate-100" >
                 <div className="w-full flex items-center gap-2">
 
                     <SmallUser {...props.author} with_follow={true} />
@@ -56,7 +56,7 @@ const NewsFeedPost: React.FC<NewsFeedPostProps> = (props: NewsFeedPostProps) => 
                 <p className="text-xl cursor-pointer" onClick={setPostId} >{props.content}</p>
                 {/* </Link> */}
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                {props.picture && (<img src={props.picture} alt={props.content} className='object-contain w-full rounded-xl mt-2' />)}
+                {props.picture && (<img src={props.picture} alt={props.content} className='object-contain w-full mt-2' />)}
                 <hr className="my-3 opacity-0" />
                 <div className="flex gap-6 justify-start my-2">
                     <button className="flex justify-start items-center"><img src="/icons/like.svg" alt="" className="w-6 h-5 " /><span>Like {props.likes.length}</span></button>
@@ -70,5 +70,5 @@ const NewsFeedPost: React.FC<NewsFeedPostProps> = (props: NewsFeedPostProps) => 
 
 }
 
-
+const NewsFeedPost  = React.memo(NFPost)
 export default NewsFeedPost

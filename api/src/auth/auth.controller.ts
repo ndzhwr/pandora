@@ -35,7 +35,7 @@ export class AuthController {
     success: boolean;
     message: string;
   }> {
-    console.log(req.user)
+
     const userId = req.user['id'];
     return this.authService.logout(userId)
 
@@ -43,7 +43,6 @@ export class AuthController {
 
   @Put('refreshToken')
   refreshToken(@Body() body : { refreshToken : string}){
-    console.log(body)
     return this.authService.refreshToken(body.refreshToken)
   }
 }

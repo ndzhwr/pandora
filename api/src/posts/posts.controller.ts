@@ -83,7 +83,6 @@ export class PostsController {
   getPostById(@Query() query: any) {
     const { postId } = query;
     if (!postId) throw new NotAcceptableException('Post Id not provided');
-    console.log(postId)
     return this.postsService.getPostById(postId);
   }
 

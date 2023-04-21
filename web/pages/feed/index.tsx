@@ -20,8 +20,8 @@ const Feed = () => {
                 <NewPost />
                 <div className="newpost flex  flex-col  md:my-3 msm:my-1  " id="scrollArea">
                     {
-                        posts != null && posts.map((post) => (
-                            <NewsFeedPost content={post.content} picture={post.picture} author={{ id: post.author.id, username: post.author.username, profile: post.author.profile ? post.author.profile.profilePicture :  defaultProfile ,  status: post.author.profile ? post.author.profile.status : "Hey there! I'm using Pandora" }} likes={post.likes} comments={post.comments} id={post.id } />
+                        posts != null && posts.map((post , i) => (
+                            <NewsFeedPost key={i} content={post.content} picture={post.picture} author={{ id: post.author.id, username: post.author.username, profile: post.author.profile ? post.author.profile.profilePicture :  defaultProfile ,  status: post.author.profile ? post.author.profile.status : "Hey there! I'm using Pandora" }} likes={post.likes} comments={post.comments} id={post.id } />
                         ))
                     }
                     <Loader />

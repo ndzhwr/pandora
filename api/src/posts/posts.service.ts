@@ -47,7 +47,6 @@ export class PostsService {
       });
       return { success: true, data: post };
     } catch (err: any) {
-      console.log(err)
       throw new InternalServerErrorException(err.message);
     }
   }

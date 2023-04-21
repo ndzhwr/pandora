@@ -3,7 +3,6 @@ import React, {
 } from 'react';
 import { useRouter } from "next/router";
 import { api } from '../utils/api';
-import axios from 'axios';
 import { setCookie } from '../utils/cookie';
 
 interface User {

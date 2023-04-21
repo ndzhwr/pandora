@@ -163,7 +163,9 @@ export class ProfileService {
 
   async followUser(user: Express.User, userId: string) {
     try {
-      if (user['id'] == userId) throw new NotAcceptableException('You cannot follow yourself')
+      if (user['id'] == userId){ 
+        throw new NotAcceptableException('You cannot follow yourself')
+      }
       // Check if user exists
       if (! await this.prisma.user.findUnique({
         where: {
@@ -171,8 +173,6 @@ export class ProfileService {
         },
       })
       ) throw new NotFoundException('Following user not found');
-
-      // Check if user is already following
       if (await this.prisma.followers.findFirst({
         where: {
           AND: [
@@ -219,7 +219,8 @@ export class ProfileService {
       }
 
     } catch (error) {
-      throw new InternalServerErrorException(error.message);
+      console.log(error)
+      throw new error.constructor(error.message);
     }
   }
 

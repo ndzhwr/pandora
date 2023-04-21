@@ -35,7 +35,7 @@ export class UtilsService {
         api_key: env.CLOUDINARY_API_KEY,
         api_secret: env.CLOUDINARY_API_SECRET,
       });
-      const result = await v2.uploader.upload(
+      const result = await v2.uploader.upload_chunked(
         file
       );
       return result.secure_url;

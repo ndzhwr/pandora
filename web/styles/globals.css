@@ -7,3 +7,10 @@
     font-family: system-ui;
 } */
 body { font-family: sans-serif; }
+
+
+bg-blurred{
+    filter: blur(8px);
+    -webkit-filter: blur(8px);
+  
+}

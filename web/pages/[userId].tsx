@@ -3,7 +3,7 @@ import { useRouter } from "next/router";
 import NewsFeedPost from "../components/NewsFeedPost";
 import SmallUser from "../components/User/SmallUser";
 import Loader from "../components/Loader";
-import RecommendedPeople from "../components/RecommendedPeople";
+import Image from "next/image";
 const Feed = () => {
     const [activeSection, setActiveSection] = useState<"activity" | "following" | "followers">("activity")
     const router = useRouter();
@@ -17,8 +17,8 @@ const Feed = () => {
                     style={{
                         backgroundImage: `url()`
                     }}></div>
-                <div className="-mt-16 px-6">
-                    <img src="/images/image.jpg" alt="" className="w-32 h-32 rounded-full  object-cover border-4 border-white" />
+                <div className="-mt-16 md:px-6 msm:px-1  ">
+                    <Image src="/images/image.jpg" alt="" width={"128px"} height={"128px"} className="w-32 h-32 rounded-full  object-cover border-4 border-white" />
                     <div className="flex items-center justify-between">
                         <div className="w-fit">
                             <p className="font-bold text-2xl">{"@" + router.query['userId']} </p>

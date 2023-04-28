@@ -219,7 +219,6 @@ export class ProfileService {
       }
 
     } catch (error) {
-      console.log(error)
       throw new error.constructor(error.message);
     }
   }

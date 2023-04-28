@@ -78,7 +78,7 @@ const Home: NextPage = () => {
                 auth
             }
         })
-    }, [auth])
+    }, [auth, router])
 
     const handleToggleauth = (e: any) => {
         e.preventDefault();

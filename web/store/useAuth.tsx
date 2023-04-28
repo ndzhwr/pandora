@@ -26,7 +26,7 @@ interface   IAuth {
     logout: () => Promise<void>
     error: string | null
     loading: boolean,
-    setError: React.Dispatch<React.SetStateAction<string>>
+    setNotification: React.Dispatch<React.SetStateAction<string>>
     setTokens: React.Dispatch<React.SetStateAction<any>>
 }
 
@@ -51,7 +51,7 @@ const AuthContext = createContext<IAuth>({
     logout: async () => { },
     error: null,
     loading: false,
-    setError: () => { },
+    setNotification: () => { },
     setTokens: () => { }
 });
 
@@ -65,6 +65,13 @@ export const AuthProvider = ({ children }: Props) => {
     const [error, setError] = React.useState<string | null>(null);
     const [loading, setLoading] = React.useState<boolean>(false);
     const [tokens, setTokens] = React.useState<any>({ accessToken: "", refreshToken: "" })
+
+    const setNotification = (notification : string) => {
+        setError(notification)
+        setTimeout(() => {
+            setError(null)
+        }, 2000);
+    }
 
     // use effect which will run for each time a user accesses our application.
     React.useEffect(() => {
@@ -159,7 +166,7 @@ export const AuthProvider = ({ children }: Props) => {
 
     // actual auth context
     return (
-        <AuthContext.Provider value={{ tokens, user, signUp, signIn, logout, error, setError, loading, setTokens }}>
+        <AuthContext.Provider value={{ tokens, user, signUp, signIn, logout, error, setNotification, loading, setTokens }}>
             {children}
         </AuthContext.Provider>
     );

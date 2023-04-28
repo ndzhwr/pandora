@@ -1,7 +1,8 @@
 import React from "react";
 import { fetcher } from '../utils/api'
 import Loader from "./Loader";
-
+import { useAuth } from "../store/useAuth";
+import Image from "next/image";
 
 const NewPost: React.FC = () => {
 
@@ -10,7 +11,12 @@ const NewPost: React.FC = () => {
     const [file, setFile] = React.useState<any>(null)
     const [loading,setLoading] =  React.useState<boolean>(false)
 
+    const  {  setNotification } = useAuth()
     const handleSendPost = () => {
+        if(postData.content.trim() == "") { 
+            setNotification("Couldn't add an empty post!")
+            return
+        }
         (async function () {
             setLoading(true);
             let res = await fetcher("posts/create", {
@@ -18,7 +24,9 @@ const NewPost: React.FC = () => {
                 method: 'POST',
                 useToken: true,
                 c_type : 'application/json'
-            })                                 
+            })  
+            console.log(res)
+            setNotification(res.success != undefined ? res.success == true ? "You added a  new post " : "Something went wrong" : "Something went wrong")              
             setLoading(false);
         }());  
  
@@ -39,13 +47,13 @@ const NewPost: React.FC = () => {
     }
 
     return (
-        <div className="bg-white border  p-4 rounded-xl shadow-slate-100">
+        <div className="bg-white border shadow-md p-4 rounded-xl shadow-slate-100">
             <h2 className="mb-2 font-bold">Add a new post</h2>
-                <textarea name="" id="" onChange={(e) => setPostData({ ...postData, content: e.target.value.trim() })} className="w-full border-none  bg-slate-50 rounded-md p-4  max-h-32 outline-none " maxLength={280} placeholder="What's on your mind"></textarea>`
+                <textarea name="" id="" onChange={(e) => setPostData({ ...postData, content: e.target.value.trim() })} className="w-full border-none  bg-slate-50 rounded-md p-4 resize-none max-h-32 outline-none " maxLength={280} placeholder="What's on your mind"></textarea>`
                 <div className="addons my-2 flex justify-between gap-2">
                     {!base64 && <button className="flex gap-1 items-center  px-2 py-1">
                         {/* <div className="main flex bg-slate-900 h-fit  border-2  justify-center w-full "> */}
-                        <img src="/icons/image.svg" alt="" className="w-6 h-6  fill-darklue opacity-80 z-10" />
+                        <Image src="/icons/image.svg" alt="" className="w-6 h-6  fill-darklue opacity-80 z-10" width="24px" height={"24px"} />
                         <label className="  px-4 py-2 rounded-full    text-slate text-sm cursor-pointer  font-bold   ">
                             Add Image
                             <input
@@ -68,7 +76,7 @@ const NewPost: React.FC = () => {
                     <button className=" px-4 py-2 rounded-full  border bg-blue-600  text-white text-sm" onClick={handleSendPost}>{loading ? <Loader /> :  "Add post"}</button>
                 </div>
             {base64 && (
-                <img src={base64} className="object-contain items-center rounded-md" />
+                <Image src={base64} className="object-contain items-center rounded-md" alt="Post media"/>
             )}
         </div>
     )

@@ -1,6 +1,5 @@
 import Image from "next/image";
 import { useRouter } from "next/router"
-import Link from "next/link";
 import React from "react";
 import AddComment from "./post/AddComment";
 import SmallUser, { SmallUserProps } from "./User/SmallUser";
@@ -40,7 +39,8 @@ const NFPost: React.FC<NewsFeedPostProps> = (props: NewsFeedPostProps) => {
     }
     return (
         <>
-            <div className="w-full  p-3 border    md:my-3 msm:my-1 rounded-xl shadow-slate-100" >
+            <div className="w-full   border shadow-md md:my-3 msm:my-1 rounded-xl shadow-slate-100" >
+            <div className="p-3">
                 <div className="w-full flex items-center gap-2">
 
                     <SmallUser {...props.author} with_follow={true} />
@@ -54,16 +54,18 @@ const NFPost: React.FC<NewsFeedPostProps> = (props: NewsFeedPostProps) => {
                 <hr className="my-3 opacity-0" />
                 {/* <Link href={{ pathname : router.pathname , query : { postId : props.id}}} > */}
                 <p className="text-xl cursor-pointer" onClick={setPostId} >{props.content}</p>
-                {/* </Link> */}
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                {props.picture && (<img src={props.picture} alt={props.content} className='object-contain w-full mt-2' />)}
+                </div>
+                {props.picture && (<img src={props.picture} alt={props.content} onClick={setPostId} draggable="false" className='object-contain w-full mt-2' />)}
+                <div className="p-3">
+
                 <hr className="my-3 opacity-0" />
                 <div className="flex gap-6 justify-start my-2">
-                    <button className="flex justify-start items-center"><img src="/icons/like.svg" alt="" className="w-6 h-5 " /><span>Like {props.likes.length}</span></button>
-                    <button className="flex justify-start items-center"><img src="/icons/comment.svg" alt="" className="w-6 h-5" /><span>Comment {props.comments.length}</span></button>
+                    <button className="flex justify-start items-center"><Image src="/icons/like.svg" alt="" className="w-6 h-5 " width={24} height={24} /><span>Like {props.likes.length}</span></button>
+                    <button className="flex justify-start items-center"><Image src="/icons/comment.svg" alt="" className="w-6 h-5"  width={24} height={24}/><span>Comment {props.comments.length}</span></button>
                 </div>
                 <hr className="my-3 opacity-0" />
                 <AddComment author={{ username: "ndhzwr", picture: "/images/image.jpg", id: "1123" }} postid="sgs5" />
+                </div>
             </div>
         </>
     )

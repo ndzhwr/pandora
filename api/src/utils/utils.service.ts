@@ -29,18 +29,16 @@ export class UtilsService {
 
   async uploadFile(file: string): Promise<string> {
     try {
-     
       v2.config({
         cloud_name: env.CLOUDINARY_CLOUD_NAME,
         api_key: env.CLOUDINARY_API_KEY,
         api_secret: env.CLOUDINARY_API_SECRET,
       });
-      const result = await v2.uploader.upload_chunked(
+      const result = await v2.uploader.upload(
         file
       );
       return result.secure_url;
     } catch (err) {
-      Logger.log(err.message, "Cloudinary error")
       throw new InternalServerErrorException(err);
     }
   }

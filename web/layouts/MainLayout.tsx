@@ -40,7 +40,7 @@ const MainLayout: React.FC<MainLayoutProps> = (props: MainLayoutProps) => {
 
     return (
         <div className="relative">
-            <div className={`flex h-full min-h-screen min-w-screen relative text-sm xl:px-[17vw]`}>
+            <div className={`flex h-full min-h-screen min-w-screen relative bg-white text-sm xl:px-[17vw]`}>
                 <div className={`py-3 max-h-screen sticky top-0 ${router.pathname == "/" && "hidden"} border-r `}>
                     <div className=" px-1   flex flex-col justify-between h-full  top-0 bg-slate z-40  md:static   bg-white">
                         <div className="md:block">
@@ -76,27 +76,34 @@ const MainLayout: React.FC<MainLayoutProps> = (props: MainLayoutProps) => {
                         </button>
                     </div>
                 </div>
-                {/* <div className="bg-red-600 absolute top-0 w-fit  text-white px-10 py-4 rounded-md">
-                    Error
-                </div> */}
+
                 {props.children}
             </div>
-            {postId && <div className="fixed  w-screen  md:mb-0 msm:mb-12  msm:p-4 sm:px-[4vw] md:px-[10vw] md:py-20 bg-black/60 backdrop-blur-md z-30 top-0  bottom-0 flex  msm:flex-col md:flex-row  items-center justify-center h-screen">
+            {postId && <div className="fixed  w-screen  bg-black/10 md:mb-0 msm:mb-12  msm:p-4 sm:px-[4vw] md:px-[10vw] md:py-20 bg-transparent  z-30 top-0  bottom-0 flex  msm:flex-col md:flex-row  items-center justify-center h-screen">
                 {postData && (
-                    <div className="shadow-md rounded-xl shadow-black/20 flex">
-                        {postData.picture && (<img src={postData.picture} alt={postData.content} className='object-contain h-[70vh] bg-white/80 md:max-w-[400px]' draggable="false" />)}
-                        <div className="  p-3  bg-white  h-[70vh] w-[35vw]">
-                            <SmallUser id={postData.author.id} username={postData.author.username} profile={postData.author.profile ? postData.author.profile.profilePicture : defaultProfile} status={postData.author.profile ? postData.author.profile.status : "Rwanda the heart of africa"} />
-                            <hr className="my-3 opacity-0" />
-                            <p className="text-xl">{postData.content}</p>
-                            {/* eslint-disable-next-line @next/next/no-img-element */}
-                            <hr className="my-3 opacity-0" />
-                            <div className="flex gap-6 justify-start my-2">
-                                <button className="flex justify-start items-center"><img src="/icons/like.svg" alt="" className="w-6 h-4 " /><span>Like {0}</span></button>
-                                <button className="flex justify-start items-center"><img src="/icons/comment.svg" alt="" className="w-6 h-4" /><span>Comment {10}</span></button>
+                    <div className="rounded-xl flex  ">
+                        <div className="  bg-white rounded-xl h-[90vh] overflow-hidden  flex items-start msm:flex-col md:flex-row">
+                            {postData.picture && (<img
+                                src={postData.picture}
+                                // style={{ background: `url(${postData.picture})`, backdropFilter: "blur(9px)" }}
+                                alt={postData.content}
+                                className='object-contain bg-blurred h-full md:max-w-[500px] bg-slate-50   backdrop-contrast-200 flex items-center'
+                                draggable="false" />
+                            )}
+                            <div className="p-6  min-w-[40vw]">
+
+                                <SmallUser id={postData.author.id} username={postData.author.username} profile={postData.author.profile ? postData.author.profile.profilePicture : defaultProfile} status={postData.author.profile ? postData.author.profile.status : "Rwanda the heart of africa"} />
+                                <hr className="my-3 opacity-0" />
+                                <p className="text-xl">{postData.content}</p>
+                                {/* eslint-disable-next-line @next/next/no-img-element */}
+                                <hr className="my-3 opacity-0" />
+                                <div className="flex gap-6 justify-start my-2">
+                                    <button className="flex justify-start items-center"><img src="/icons/like.svg" alt="" className="w-6 h-4 " /><span>Like {0}</span></button>
+                                    <button className="flex justify-start items-center"><img src="/icons/comment.svg" alt="" className="w-6 h-4" /><span>Comment {10}</span></button>
+                                </div>
+                                <hr className="my-3 opacity-0" />
+                                <AddComment author={{ username: "ndhzwr", picture: "/images/image.jpg", id: "1123" }} postid={postData.id} />
                             </div>
-                            <hr className="my-3 opacity-0" />
-                            <AddComment author={{ username: "ndhzwr", picture: "/images/image.jpg", id: "1123" }} postid={postData.id} />
                         </div>
                     </div>
                 )}
@@ -106,11 +113,11 @@ const MainLayout: React.FC<MainLayoutProps> = (props: MainLayoutProps) => {
                     </div>
 
                 }
-                <button className="absolute  left-4 top-4 bg-slate-100 bg-opacity-80 w-8 h-8 rounded-full text-slate-700" onClick={handleClosePortal}>X</button>
+                <button className="absolute  left-4 top-4 bg-slate-100 bg-opacity-80 w-8 h-8 rounded-full text-slate-700 z-50" onClick={handleClosePortal} onTouchEnd={handleClosePortal}>X</button>
             </div>}
-            <div className="fixed px-4 bottom-4 z-50 w-screen bg-transparent">
+            {error != null && <div className="fixed px-4 sm:top-4 sm:bottom-full msm:top-full  msm:bottom-4 w-screen bg-transparent">
                 <ErrorMessage message={error} />
-            </div>
+            </div>}
         </div>
     )
 

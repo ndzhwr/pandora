@@ -38,7 +38,7 @@ export const fetcher = async (url: string, options: FetcherOptions) => {
                 "authorization": options.useToken ? `Bearer ${getCookie("accessToken")}` : null,
                 ...options.headers
             }
-        })  
+        })
         response = await res.json()
         if (response.message == "Unauthorized" || (response.message != undefined && response.message.name == "TokenExpiredError")) {
             if (getCookie("refreshToken") == "") return window.location.href = "/?auth=login"
@@ -99,7 +99,7 @@ export const logoutHandler = () => {
     }
 }
 
-export const getAllPostsHandler = () : Promise<{ success : boolean , data  : Post[] }>  => {
+export const getAllPostsHandler = (): Promise<{ success: boolean, data: Post[] }> => {
     return new Promise((resolve, reject) => {
         try {
             (async function () {
@@ -108,14 +108,14 @@ export const getAllPostsHandler = () : Promise<{ success : boolean , data  : Pos
                     useToken: true,
                 })
                 console.log(res)
-                resolve(res)
+                resolve({ success: true, data: (res.data != undefined && res.data != null && res.data.length != 0) ? res.data.reverse() : [] })
             }());
         } catch (error) {
             reject(error)
         }
     })
 }
-export const getSinglePostHandler = (postId  : string) : Promise<{ success : boolean , data  : Post }>  => {
+export const getSinglePostHandler = (postId: string): Promise<{ success: boolean, data: Post }> => {
     return new Promise((resolve, reject) => {
         try {
             let data: any;
@@ -132,4 +132,4 @@ export const getSinglePostHandler = (postId  : string) : Promise<{ success : boo
     })
 }
 
-export const defaultProfile : string  = "https://thumbs.dreamstime.com/b/default-profile-picture-avatar-photo-placeholder-vector-illustration-default-profile-picture-avatar-photo-placeholder-vector-189495158.jpg"   ;
+export const defaultProfile: string = "https://thumbs.dreamstime.com/b/default-profile-picture-avatar-photo-placeholder-vector-illustration-default-profile-picture-avatar-photo-placeholder-vector-189495158.jpg";

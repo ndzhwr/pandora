@@ -11,12 +11,14 @@ const Feed = () => {
     React.useEffect(() => { 
         (async function() {
             const alltheposts = await getAllPostsHandler() ;
-            setPosts((alltheposts.success && alltheposts.success ==  true) ? alltheposts.data : null)
+            setTimeout(() => {
+                setPosts((alltheposts.success && alltheposts.success ==  true) ? alltheposts.data : null)
+            })
         }())
     } ,[])
     return (
         <div className="py-6   w-full  grid md:grid-cols-3 sm:grid-cols-1 ">
-            <div className="sm:px-4   md:col-start-1 md:col-end-3 ">
+            <div className="sm:px-1  md:px-20   md:col-start-1 md:col-end-3 ">
                 <NewPost />
                 <div className="newpost flex  flex-col  md:my-3 msm:my-1  " id="scrollArea">
                     {
@@ -27,7 +29,10 @@ const Feed = () => {
                     <Loader />
                 </div>
             </div>
+            <div className="sm:px-1  md:px-6  ">
+
             <RecommendedPeople/>
+            </div>
         </div>
     )
 }
